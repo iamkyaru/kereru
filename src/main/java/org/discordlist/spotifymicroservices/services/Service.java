@@ -6,7 +6,7 @@ public interface Service<T> {
 
     void add(T t);
 
-    Collection<T> getAll();
+    Collection<T> getCollection();
 
     T get(String id);
 

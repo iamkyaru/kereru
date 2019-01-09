@@ -18,17 +18,20 @@ public class TrackService implements Service<Track> {
 
     @Override
     public void add(Track track) {
-        this.trackMap.put(track.getId(), track);
+        if (track != null)
+            this.trackMap.put(track.getId(), track);
     }
 
     @Override
-    public Collection<Track> getAll() {
+    public Collection<Track> getCollection() {
         return trackMap.values();
     }
 
     @Override
     public Track get(String id) {
-        return this.trackMap.get(id);
+        if (id != null)
+            return this.trackMap.get(id);
+        return null;
     }
 
     @Override
@@ -64,11 +67,14 @@ public class TrackService implements Service<Track> {
 
     @Override
     public void delete(String id) {
-        this.trackMap.remove(id);
+        if (id != null)
+            this.trackMap.remove(id);
     }
 
     @Override
     public boolean exists(String id) {
-        return this.trackMap.containsKey(id);
+        if (id != null)
+            return this.trackMap.containsKey(id);
+        return false;
     }
 }

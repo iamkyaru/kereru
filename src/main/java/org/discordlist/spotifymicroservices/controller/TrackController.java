@@ -26,8 +26,12 @@ public class TrackController {
     public static final Route GET_TRACKS = (request, response)
             -> GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCollection())));
 
-    public static final Route GET_TRACK = (request, response)
-            -> GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(request.params(":id")))));
+    public static final Route GET_TRACK = (request, response) -> {
+        String id = request.params(":id");
+        if (!service.exists(id))
+            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Track does not exist"));
+        return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(id))));
+    };
 
     public static final Route PUT_TRACK = (request, response) -> {
         Track track = GSON.fromJson(request.body(), Track.class);
@@ -38,7 +42,7 @@ public class TrackController {
         if (editedTrack != null)
             return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(editedTrack)));
         else
-            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Track couldn't be edited."));
+            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Track could not be edited."));
     };
 
     public static final Route DELETE_TRACK = (request, response) -> {
@@ -48,5 +52,5 @@ public class TrackController {
 
     public static final Route OPTIONS_TRACK = (request, response)
             -> GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS,
-            (service.exists(request.params(":id")) ? "Track exists" : "Track doesn't exist")));
+            (service.exists(request.params(":id")) ? "Track does exist" : "Track does not exist")));
 }

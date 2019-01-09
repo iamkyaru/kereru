@@ -77,4 +77,8 @@ public class TrackService implements Service<Track> {
             return this.trackMap.containsKey(id);
         return false;
     }
+
+    public Map<String, Track> getTrackMap() {
+        return this.trackMap;
+    }
 }

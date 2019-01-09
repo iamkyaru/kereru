@@ -27,7 +27,7 @@ public class Track {
     }
 
     public String getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(String id) {
@@ -35,7 +35,7 @@ public class Track {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -43,7 +43,7 @@ public class Track {
     }
 
     public List<String> getArtists() {
-        return artists;
+        return this.artists;
     }
 
     public void setArtists(List<String> artists) {
@@ -51,7 +51,7 @@ public class Track {
     }
 
     public String getUrl() {
-        return url;
+        return this.url;
     }
 
     public void setUrl(String url) {
@@ -59,7 +59,7 @@ public class Track {
     }
 
     public long getDurationTimeMillis() {
-        return durationTimeMillis;
+        return this.durationTimeMillis;
     }
 
     public void setDurationTimeMillis(long durationTimeMillis) {
@@ -67,7 +67,7 @@ public class Track {
     }
 
     public String getHref() {
-        return href;
+        return this.href;
     }
 
     public void setHref(String href) {
@@ -75,7 +75,7 @@ public class Track {
     }
 
     public String getUri() {
-        return uri;
+        return this.uri;
     }
 
     public void setUri(String uri) {
@@ -83,7 +83,7 @@ public class Track {
     }
 
     public boolean isPlayable() {
-        return playable;
+        return this.playable;
     }
 
     public void setPlayable(boolean playable) {
@@ -91,7 +91,7 @@ public class Track {
     }
 
     public boolean isExplicit() {
-        return explicit;
+        return this.explicit;
     }
 
     public void setExplicit(boolean explicit) {

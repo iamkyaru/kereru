@@ -29,11 +29,13 @@ public class SpotifyMicroservice {
         put("/tracks/:id", TrackController.PUT_TRACK);
         delete("/tracks/:id", TrackController.DELETE_TRACK);
         options("/tracks/:id", TrackController.OPTIONS_TRACK);
-        
+
         /* Playlists */
         post("/playlists", PlaylistController.POST_PLAYLIST);
         get("/playlists", PlaylistController.GET_PLAYLISTS);
         get("/playlists/:id", PlaylistController.GET_PLAYLIST);
+        get("/playlists/:id/tracks", PlaylistController.GET_PLAYLIST_TRACKS);
+        get("/playlists/:id/tracks/:trackId", PlaylistController.GET_PLAYLIST_TRACK);
         put("/playlists/:id", PlaylistController.PUT_PLAYLIST);
         delete("/playlists/:id", PlaylistController.DELETE_PLAYLIST);
         options("/playlists/:id", PlaylistController.OPTIONS_PLAYLIST);

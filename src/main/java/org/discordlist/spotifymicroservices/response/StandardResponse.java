@@ -2,6 +2,7 @@ package org.discordlist.spotifymicroservices.response;
 
 import com.google.gson.JsonElement;
 
+@SuppressWarnings("unused")
 public class StandardResponse {
 
     private StatusResponse status;

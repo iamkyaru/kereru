@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Track {
 
-    private String id;
+    private final String id;
     private String name;
     private List<String> artists;
     private String url;
@@ -28,10 +28,6 @@ public class Track {
 
     public String getId() {
         return this.id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {

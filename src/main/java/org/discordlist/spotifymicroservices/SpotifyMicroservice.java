@@ -15,12 +15,12 @@ import java.util.Objects;
 
 import static spark.Spark.*;
 
-public class SpotifyMicroservices {
+public class SpotifyMicroservice {
 
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private Service<Track> service = new TrackService();
 
-    private SpotifyMicroservices() {
+    private SpotifyMicroservice() {
         port(1337);
         get("/", (request, response) -> "Hello World");
 
@@ -65,6 +65,6 @@ public class SpotifyMicroservices {
     }
 
     public static void main(String[] args) {
-        new SpotifyMicroservices();
+        new SpotifyMicroservice();
     }
 }

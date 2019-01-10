@@ -6,15 +6,15 @@ public class Track {
 
     private final String id;
     private String name;
-    private List<String> artists;
+    private List<Artist> artists;
     private String url;
     private long durationTimeMillis;
     private String href;
     private String uri;
-    private boolean playable;
+    private boolean local;
     private boolean explicit;
 
-    public Track(String id, String name, List<String> artists, String url, long durationTimeMillis, String href, String uri, boolean playable, boolean explicit) {
+    public Track(String id, String name, List<Artist> artists, String url, long durationTimeMillis, String href, String uri, boolean local, boolean explicit) {
         this.id = id;
         this.name = name;
         this.artists = artists;
@@ -22,7 +22,7 @@ public class Track {
         this.durationTimeMillis = durationTimeMillis;
         this.href = href;
         this.uri = uri;
-        this.playable = playable;
+        this.local = local;
         this.explicit = explicit;
     }
 
@@ -38,11 +38,11 @@ public class Track {
         this.name = name;
     }
 
-    public List<String> getArtists() {
+    public List<Artist> getArtists() {
         return this.artists;
     }
 
-    public void setArtists(List<String> artists) {
+    public void setArtists(List<Artist> artists) {
         this.artists = artists;
     }
 
@@ -78,12 +78,12 @@ public class Track {
         this.uri = uri;
     }
 
-    public boolean isPlayable() {
-        return this.playable;
+    public boolean isLocal() {
+        return this.local;
     }
 
-    public void setPlayable(boolean playable) {
-        this.playable = playable;
+    public void setLocal(boolean local) {
+        this.local = local;
     }
 
     public boolean isExplicit() {

@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class ArtistService implements Service<Artist> {
 
-    private Map<String, Artist> artistMap;
+    private final Map<String, Artist> artistMap;
 
     public ArtistService() {
         this.artistMap = new HashMap<>();

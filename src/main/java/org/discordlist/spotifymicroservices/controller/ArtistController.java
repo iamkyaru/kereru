@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.discordlist.spotifymicroservices.SpotifyMicroservice;
 import org.discordlist.spotifymicroservices.entities.Artist;
-import org.discordlist.spotifymicroservices.entities.Playlist;
 import org.discordlist.spotifymicroservices.entities.Track;
 import org.discordlist.spotifymicroservices.response.StandardResponse;
 import org.discordlist.spotifymicroservices.services.Service;
@@ -69,5 +68,5 @@ public class ArtistController {
 
     public static final Route OPTIONS_ARTIST = (request, response)
             -> GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS,
-            (service.exists(request.params(":id")) ? "Artist does exist" : "Artist does not exist")));;
+            (service.exists(request.params(":id")) ? "Artist does exist" : "Artist does not exist")));
 }

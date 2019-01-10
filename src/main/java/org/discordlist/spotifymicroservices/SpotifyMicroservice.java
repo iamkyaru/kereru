@@ -1,6 +1,5 @@
 package org.discordlist.spotifymicroservices;
 
-import com.google.gson.Gson;
 import org.discordlist.spotifymicroservices.controller.AlbumController;
 import org.discordlist.spotifymicroservices.controller.ArtistController;
 import org.discordlist.spotifymicroservices.controller.PlaylistController;

@@ -6,7 +6,7 @@ public interface Service<T> {
 
     void add(T t);
 
-    Collection<T> getCollection();
+    Collection<T> getCachedValues();
 
     T get(String id);
 

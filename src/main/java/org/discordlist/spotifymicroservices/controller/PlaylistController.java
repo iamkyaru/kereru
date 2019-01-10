@@ -25,7 +25,7 @@ public class PlaylistController {
     };
 
     public static final Route GET_PLAYLISTS = (request, response)
-            -> GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCollection())));
+            -> GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCachedValues())));
 
     public static final Route GET_PLAYLIST = (request, response) -> {
         String id = request.params(":id");

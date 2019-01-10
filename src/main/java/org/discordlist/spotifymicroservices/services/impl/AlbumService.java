@@ -23,7 +23,7 @@ public class AlbumService implements Service<Album> {
     }
 
     @Override
-    public Collection<Album> getCollection() {
+    public Collection<Album> getCachedValues() {
         return this.albumMap.values();
     }
 

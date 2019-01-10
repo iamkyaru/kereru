@@ -23,7 +23,7 @@ public class ArtistService implements Service<Artist> {
     }
 
     @Override
-    public Collection<Artist> getCollection() {
+    public Collection<Artist> getCachedValues() {
         return this.artistMap.values();
     }
 

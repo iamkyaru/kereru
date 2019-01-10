@@ -23,7 +23,7 @@ public class PlaylistService implements Service<Playlist> {
     }
 
     @Override
-    public Collection<Playlist> getCollection() {
+    public Collection<Playlist> getCachedValues() {
         return this.playlistMap.values();
     }
 

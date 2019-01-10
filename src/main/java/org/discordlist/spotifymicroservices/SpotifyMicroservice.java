@@ -5,17 +5,17 @@ import org.discordlist.spotifymicroservices.entities.Album;
 import org.discordlist.spotifymicroservices.entities.Artist;
 import org.discordlist.spotifymicroservices.entities.Playlist;
 import org.discordlist.spotifymicroservices.entities.Track;
-import org.discordlist.spotifymicroservices.services.Service;
+import org.discordlist.spotifymicroservices.services.IService;
 import org.discordlist.spotifymicroservices.services.impl.TrackService;
 
 import static spark.Spark.*;
 
 public class SpotifyMicroservice {
 
-    private static Service<Track> trackService;
-    private static Service<Playlist> playlistService;
-    private static Service<Album> albumService;
-    private static Service<Artist> artistService;
+    private static IService<Track> trackService;
+    private static IService<Playlist> playlistService;
+    private static IService<Album> albumService;
+    private static IService<Artist> artistService;
 
     private SpotifyMicroservice() {
         trackService = new TrackService("");
@@ -66,19 +66,19 @@ public class SpotifyMicroservice {
 //        options("/artists/:id", ArtistController.OPTIONS_ARTIST);
     }
 
-    public static Service<Track> getTrackService() {
+    public static IService<Track> getTrackService() {
         return trackService;
     }
 
-    public static Service<Playlist> getPlaylistService() {
+    public static IService<Playlist> getPlaylistService() {
         return playlistService;
     }
 
-    public static Service<Album> getAlbumService() {
+    public static IService<Album> getAlbumService() {
         return albumService;
     }
 
-    public static Service<Artist> getArtistService() {
+    public static IService<Artist> getArtistService() {
         return artistService;
     }
 

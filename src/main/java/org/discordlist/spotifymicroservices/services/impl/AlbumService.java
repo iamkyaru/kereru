@@ -2,13 +2,13 @@ package org.discordlist.spotifymicroservices.services.impl;
 
 import org.discordlist.spotifymicroservices.entities.Album;
 import org.discordlist.spotifymicroservices.exceptions.AlbumException;
-import org.discordlist.spotifymicroservices.services.Service;
+import org.discordlist.spotifymicroservices.services.IService;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AlbumService implements Service<Album> {
+public class AlbumService implements IService<Album> {
 
     private final Map<String, Album> albumMap;
 

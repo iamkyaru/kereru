@@ -7,13 +7,13 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.discordlist.spotifymicroservices.entities.Artist;
 import org.discordlist.spotifymicroservices.entities.Track;
-import org.discordlist.spotifymicroservices.services.Service;
+import org.discordlist.spotifymicroservices.services.IService;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class TrackService implements Service<Track> {
+public class TrackService implements IService<Track> {
 
     private final Map<String, Track> trackMap;
     private final OkHttpClient httpClient;

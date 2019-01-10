@@ -2,7 +2,7 @@ package org.discordlist.spotifymicroservices.services;
 
 import java.util.Collection;
 
-public interface Service<T> {
+public interface IService<T> {
 
     void add(T t);
 

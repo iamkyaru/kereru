@@ -2,13 +2,13 @@ package org.discordlist.spotifymicroservices.services.impl;
 
 import org.discordlist.spotifymicroservices.entities.Artist;
 import org.discordlist.spotifymicroservices.exceptions.ArtistException;
-import org.discordlist.spotifymicroservices.services.Service;
+import org.discordlist.spotifymicroservices.services.IService;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ArtistService implements Service<Artist> {
+public class ArtistService implements IService<Artist> {
 
     private final Map<String, Artist> artistMap;
 

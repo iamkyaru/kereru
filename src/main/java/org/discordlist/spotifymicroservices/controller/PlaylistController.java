@@ -6,13 +6,13 @@ import org.discordlist.spotifymicroservices.SpotifyMicroservice;
 import org.discordlist.spotifymicroservices.entities.Playlist;
 import org.discordlist.spotifymicroservices.entities.Track;
 import org.discordlist.spotifymicroservices.response.StandardResponse;
-import org.discordlist.spotifymicroservices.services.Service;
+import org.discordlist.spotifymicroservices.services.IService;
 import spark.Route;
 
 public class PlaylistController {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Service<Playlist> service = SpotifyMicroservice.getPlaylistService();
+    private static final IService<Playlist> service = SpotifyMicroservice.getPlaylistService();
 
     public static final Route POST_PLAYLIST = (request, response) -> {
         if (request.body() == null || request.body().isEmpty())

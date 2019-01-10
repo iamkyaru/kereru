@@ -2,7 +2,6 @@ package org.discordlist.spotifymicroservices.services.impl;
 
 import org.discordlist.spotifymicroservices.entities.Playlist;
 import org.discordlist.spotifymicroservices.exceptions.PlaylistException;
-import org.discordlist.spotifymicroservices.exceptions.TrackException;
 import org.discordlist.spotifymicroservices.services.Service;
 
 import java.util.Collection;
@@ -11,7 +10,7 @@ import java.util.Map;
 
 public class PlaylistService implements Service<Playlist> {
 
-    private Map<String, Playlist> playlistMap;
+    private final Map<String, Playlist> playlistMap;
 
     public PlaylistService() {
         this.playlistMap = new HashMap<>();

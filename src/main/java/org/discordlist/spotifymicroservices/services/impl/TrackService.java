@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class TrackService implements Service<Track> {
 
-    private Map<String, Track> trackMap;
+    private final Map<String, Track> trackMap;
 
     public TrackService() {
         this.trackMap = new HashMap<>();

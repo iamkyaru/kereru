@@ -54,7 +54,7 @@ public class StandardResponse {
         SUCCESS("Success"),
         ERROR("Error");
 
-        private String status;
+        private final String status;
 
         StatusResponse(String status) {
             this.status = status;

@@ -35,7 +35,6 @@ public class TrackController {
 
     public static final Route PUT_TRACK = (request, response) -> {
         Track track = GSON.fromJson(request.body(), Track.class);
-        System.out.println(track.getId() + "-" + request.body());
         if (track.getId() == null || track.getId().isEmpty())
             return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Track not found"));
         Track editedTrack = service.edit(track);

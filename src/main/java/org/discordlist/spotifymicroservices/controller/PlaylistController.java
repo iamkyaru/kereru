@@ -9,8 +9,6 @@ import org.discordlist.spotifymicroservices.response.StandardResponse;
 import org.discordlist.spotifymicroservices.services.Service;
 import spark.Route;
 
-import java.util.stream.Stream;
-
 public class PlaylistController {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -59,7 +57,6 @@ public class PlaylistController {
 
     public static final Route PUT_PLAYLIST = (request, response) -> {
         Playlist playlist = GSON.fromJson(request.body(), Playlist.class);
-        System.out.println(playlist.getId() + "-" + request.body());
         if (playlist.getId() == null || playlist.getId().isEmpty())
             return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Playlist not found"));
         Playlist editedPlaylist = service.edit(playlist);

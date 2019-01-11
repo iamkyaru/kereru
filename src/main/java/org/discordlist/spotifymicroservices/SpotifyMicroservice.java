@@ -37,8 +37,10 @@ public class SpotifyMicroservice {
 
         this.trackService = new TrackService(redisSession);
         this.artistService = new ArtistService();
-//        this.playlistService = new PlaylistService();
+        this.playlistService = new PlaylistService(redisSession);
 //        this.albumService = new AlbumService();
+
+
 
         port(config.getInt(Config.SERVICE_PORT));
         ipAddress(config.getString(Config.SERVICE_BIND));

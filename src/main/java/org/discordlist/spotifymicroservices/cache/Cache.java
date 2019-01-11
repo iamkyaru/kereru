@@ -24,7 +24,7 @@ public abstract class Cache<T extends Cacheable> {
 
     public T get(String id) {
         try (Jedis jedis = redis.pool().getResource()) {
-            if (exist(id))
+            if (!exist(id))
                 return fetchAndCacheEntity(id);
             String res = jedis.hget(path, id);
             return gson.fromJson(res, typeParameterClass);

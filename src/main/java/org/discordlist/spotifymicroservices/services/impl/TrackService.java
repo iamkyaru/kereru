@@ -70,7 +70,7 @@ public class TrackService extends AbstractRequest implements IService<Track> {
                     return makeTrack(jsonObject);
                 }
             } catch (IOException e) {
-                logger.error("Could not fetch Track", e);
+//                logger.error("Could not fetch Track", e);
             }
         }
         return null;

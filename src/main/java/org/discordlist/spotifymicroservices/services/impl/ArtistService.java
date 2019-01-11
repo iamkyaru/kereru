@@ -64,7 +64,7 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
                     return makeArtist(jsonObject);
                 }
             } catch (IOException e) {
-                logger.error("Could not fetch Artist", e);
+//                logger.error("Could not fetch Artist", e);
             }
         }
         return null;
@@ -108,7 +108,7 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
                 });
             }
         } catch (IOException e) {
-            logger.error(String.format("Failed to fetch top-tracks from artist with id: %s", artistId), e);
+//            logger.error(String.format("Failed to fetch top-tracks from artist with id: %s", artistId), e);
         }
         return tracks;
     }

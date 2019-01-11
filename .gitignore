@@ -103,3 +103,5 @@ src/test/resources/
 /update.mp3
 
 *.log
+
+config.yml

@@ -1,7 +1,6 @@
 package org.discordlist.spotifymicroservices;
 
-import org.discordlist.spotifymicroservices.configuration.Configuration;
-import org.discordlist.spotifymicroservices.configuration.ConfigurationSetup;
+import org.discordlist.spotifymicroservices.config.Config;
 import org.discordlist.spotifymicroservices.controller.ArtistController;
 import org.discordlist.spotifymicroservices.controller.TrackController;
 import org.discordlist.spotifymicroservices.requests.handler.TokenHandler;
@@ -9,13 +8,17 @@ import org.discordlist.spotifymicroservices.services.impl.AlbumService;
 import org.discordlist.spotifymicroservices.services.impl.ArtistService;
 import org.discordlist.spotifymicroservices.services.impl.PlaylistService;
 import org.discordlist.spotifymicroservices.services.impl.TrackService;
+import org.simpleyaml.configuration.file.YamlFile;
+import org.simpleyaml.exceptions.InvalidConfigurationException;
+
+import java.io.IOException;
 
 import static spark.Spark.*;
 
 public class SpotifyMicroservice {
 
     private static SpotifyMicroservice instance;
-    private final Configuration config;
+    private final YamlFile config;
     private final TokenHandler tokenHandler;
 
     private TrackService trackService;
@@ -23,10 +26,10 @@ public class SpotifyMicroservice {
     private PlaylistService playlistService;
     private AlbumService albumService;
 
-    private SpotifyMicroservice() {
+    private SpotifyMicroservice() throws IOException, InvalidConfigurationException {
         instance = this;
-        config = ConfigurationSetup.setupConfig().init();
-        tokenHandler = new TokenHandler(config.getJSONObject("spotify"));
+        config = new Config("config.yml").load();
+        tokenHandler = new TokenHandler(config.getString(Config.SPOTIFY_CLIENT_ID), config.getString(Config.SPOTIFY_CLIENT_SECRET));
 
         trackService = new TrackService();
         artistService = new ArtistService();
@@ -64,7 +67,7 @@ public class SpotifyMicroservice {
 //        get("/albums/:id/tracks/:trackId", AlbumController.GET_ALBUM_TRACK);
     }
 
-    public Configuration getConfig() {
+    public YamlFile getConfig() {
         return this.config;
     }
 
@@ -92,7 +95,7 @@ public class SpotifyMicroservice {
         return instance;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InvalidConfigurationException {
         new SpotifyMicroservice();
     }
 }

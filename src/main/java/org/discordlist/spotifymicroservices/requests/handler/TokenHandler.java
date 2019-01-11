@@ -19,14 +19,14 @@ public class TokenHandler {
     private String accessToken;
     private long tokenExpireTime;
 
-    public TokenHandler(JSONObject jsonObject) {
+    public TokenHandler(String clientId, String clientSecret) {
         this.httpClient = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .build();
-        this.clientId = jsonObject.getString("client_id");
-        this.clientSecret = jsonObject.getString("client_secret");
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
         retrieveAccessToken();
     }
 

@@ -14,30 +14,20 @@ public class PlaylistController {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final IService<Playlist> service = SpotifyMicroservice.getInstance().getPlaylistService();
 
-    public static final Route POST_PLAYLIST = (request, response) -> {
-        if (request.body() == null || request.body().isEmpty())
-            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Empty request body"));
-        Playlist playlist = GSON.fromJson(request.body(), Playlist.class);
-        if (playlist.getId() == null)
-            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Playlist not found"));
-        service.add(playlist);
-        return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS));
-    };
-
     public static final Route GET_PLAYLISTS = (request, response)
             -> GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCachedValues())));
 
     public static final Route GET_PLAYLIST = (request, response) -> {
         String id = request.params(":id");
-        if (!service.exists(id))
-            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Playlist does not exist"));
+//        if (!service.exists(id))
+//            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Playlist does not exist"));
         return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(id))));
     };
 
     public static final Route GET_PLAYLIST_TRACKS = (request, response) -> {
         String id = request.params(":id");
-        if (!service.exists(id))
-            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Playlist does not exist"));
+//        if (!service.exists(id))
+//            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Playlist does not exist"));
         return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(id).getTracks())));
     };
 
@@ -54,24 +44,4 @@ public class PlaylistController {
         }
         return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(track)));
     };
-
-    public static final Route PUT_PLAYLIST = (request, response) -> {
-        Playlist playlist = GSON.fromJson(request.body(), Playlist.class);
-        if (playlist.getId() == null || playlist.getId().isEmpty())
-            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Playlist not found"));
-        Playlist editedPlaylist = service.edit(playlist);
-        if (editedPlaylist != null)
-            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(editedPlaylist)));
-        else
-            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Playlist could not be edited."));
-    };
-
-    public static final Route DELETE_PLAYLIST = (request, response) -> {
-        service.delete(request.params(":id"));
-        return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, "Playlist deleted"));
-    };
-
-    public static final Route OPTIONS_PLAYLIST = (request, response)
-            -> GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS,
-            (service.exists(request.params(":id")) ? "Playlist does exist" : "Playlist does not exist")));
 }

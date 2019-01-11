@@ -3,7 +3,6 @@ package org.discordlist.spotifymicroservices.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.discordlist.spotifymicroservices.SpotifyMicroservice;
-import org.discordlist.spotifymicroservices.entities.Track;
 import org.discordlist.spotifymicroservices.response.StandardResponse;
 import org.discordlist.spotifymicroservices.services.impl.TrackService;
 import spark.Route;

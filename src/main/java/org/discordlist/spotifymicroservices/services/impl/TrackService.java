@@ -8,7 +8,6 @@ import org.discordlist.spotifymicroservices.entities.Artist;
 import org.discordlist.spotifymicroservices.entities.Track;
 import org.discordlist.spotifymicroservices.requests.AbstractRequest;
 import org.discordlist.spotifymicroservices.services.IService;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.*;
@@ -52,7 +51,7 @@ public class TrackService extends AbstractRequest implements IService<Track> {
         return null;
     }
 
-    private Track makeTrack(JsonObject jsonObject) {
+    public Track makeTrack(JsonObject jsonObject) {
         String id = jsonObject.get("id").getAsString();
         List<Artist> artists = new ArrayList<>();
         jsonObject.get("artists").getAsJsonArray().forEach(jsonElement -> {

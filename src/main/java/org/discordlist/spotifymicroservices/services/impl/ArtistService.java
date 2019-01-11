@@ -1,13 +1,15 @@
 package org.discordlist.spotifymicroservices.services.impl;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.discordlist.spotifymicroservices.SpotifyMicroservice;
 import org.discordlist.spotifymicroservices.entities.Artist;
+import org.discordlist.spotifymicroservices.entities.Track;
 import org.discordlist.spotifymicroservices.requests.AbstractRequest;
 import org.discordlist.spotifymicroservices.services.IService;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.*;
@@ -57,7 +59,29 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
         String href = jsonObject.get("href").getAsString();
         String uri = jsonObject.get("uri").getAsString();
         String url = jsonObject.get("external_urls").getAsJsonObject().get("spotify").getAsString();
-        return new Artist(id, name, url, href, uri, Collections.emptyList());
+        List<Track> tracks = getTopTracks(id);
+        return new Artist(id, name, url, href, uri, tracks);
+    }
+
+    private List<Track> getTopTracks(String artistId) {
+        List<Track> tracks = new ArrayList<>();
+        Request.Builder builder = new Request.Builder()
+                .url(API_BASE + "/artists/" + artistId + "/top-tracks?country=US")
+                .get();
+        try (Response response = httpClient.newCall(builder.build()).execute()) {
+            if (response.body() != null) {
+                JsonObject rootObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                JsonArray jsonArray = rootObject.getAsJsonArray("tracks");
+                jsonArray.forEach(jsonElement -> {
+                    JsonObject jsonObject = jsonElement.getAsJsonObject();
+                    Track track = SpotifyMicroservice.getInstance().getTrackService().makeTrack(jsonObject);
+                    tracks.add(track);
+                });
+            }
+        } catch (IOException e) {
+            logger.error(String.format("Failed to fetch top-tracks from artist with id: %s", artistId), e);
+        }
+        return tracks;
     }
 
     @Override

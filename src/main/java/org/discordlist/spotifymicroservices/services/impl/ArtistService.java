@@ -1,18 +1,22 @@
 package org.discordlist.spotifymicroservices.services.impl;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.discordlist.spotifymicroservices.entities.Artist;
-import org.discordlist.spotifymicroservices.exceptions.ArtistException;
+import org.discordlist.spotifymicroservices.requests.AbstractRequest;
 import org.discordlist.spotifymicroservices.services.IService;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
-public class ArtistService implements IService<Artist> {
+public class ArtistService extends AbstractRequest implements IService<Artist> {
 
     private final Map<String, Artist> artistMap;
 
-    public ArtistService() {
+    public ArtistService(String clientId, String clientSecret) {
+        super(clientId, clientSecret);
         this.artistMap = new HashMap<>();
     }
 
@@ -29,33 +33,35 @@ public class ArtistService implements IService<Artist> {
 
     @Override
     public Artist get(String id) {
-        if (id != null)
-            return this.artistMap.get(id);
+        if (id != null) {
+            Request request = new Request.Builder()
+                    .url(API_BASE + "/artists/" + id)
+                    .get()
+                    .build();
+            try (Response response = httpClient.newCall(request).execute()) {
+                if (response.body() != null) {
+                    JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                    return makeArtist(jsonObject);
+                }
+            } catch (IOException e) {
+                logger.error("Could not fetch Artist", e);
+            }
+        }
         return null;
     }
 
+    private Artist makeArtist(JsonObject jsonObject) {
+        String id = jsonObject.get("id").getAsString();
+        String name = jsonObject.get("name").getAsString();
+        String href = jsonObject.get("href").getAsString();
+        String uri = jsonObject.get("uri").getAsString();
+        String url = jsonObject.get("external_urls").getAsJsonObject().get("spotify").getAsString();
+        return new Artist(id, name, url, href, uri, Collections.emptyList());
+    }
+
     @Override
-    public Artist edit(Artist artist) throws ArtistException {
-        try {
-            if (artist.getId() == null || artist.getId().isEmpty())
-                throw new ArtistException("Artist id cannot be null");
-            Artist editedPlaylist = this.artistMap.get(artist.getId());
-            if (editedPlaylist == null)
-                throw new ArtistException("Artist not found");
-            if (artist.getHref() != null)
-                editedPlaylist.setHref(artist.getHref());
-            if (artist.getName() != null)
-                editedPlaylist.setName(artist.getName());
-            if (artist.getTopTracks() != null && !artist.getTopTracks().isEmpty())
-                editedPlaylist.setTopTracks(artist.getTopTracks());
-            if (artist.getUri() != null)
-                editedPlaylist.setUri(artist.getUri());
-            if (artist.getUrl() != null)
-                editedPlaylist.setUrl(artist.getUrl());
-            return editedPlaylist;
-        } catch (Exception e) {
-            throw new ArtistException(e.getMessage());
-        }
+    public Artist edit(Artist artist) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

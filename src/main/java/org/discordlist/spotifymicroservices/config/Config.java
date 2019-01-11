@@ -7,6 +7,8 @@ import java.io.IOException;
 
 public class Config {
 
+    public static String SERVICE_PORT = "service.port";
+    public static String SERVICE_BIND = "service.bind";
     public static String SPOTIFY_CLIENT_ID = "spotify.client.id";
     public static String SPOTIFY_CLIENT_SECRET = "spotify.client.secret";
 
@@ -27,6 +29,11 @@ public class Config {
     }
 
     private void setDefaults() {
+        // Service
+        saveDefault(SERVICE_PORT, 1337);
+        saveDefault(SERVICE_BIND, "localhost");
+
+        // Spotify
         saveDefault(SPOTIFY_CLIENT_ID, "1337");
         saveDefault(SPOTIFY_CLIENT_SECRET, "#itsmemario");
     }

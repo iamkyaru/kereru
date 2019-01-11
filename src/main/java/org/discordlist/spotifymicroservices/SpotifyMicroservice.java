@@ -36,13 +36,15 @@ public class SpotifyMicroservice {
 //        playlistService = new PlaylistService();
 //        albumService = new AlbumService();
 
-        port(1337);
+        port(config.getInt(Config.SERVICE_PORT));
+        ipAddress(config.getString(Config.SERVICE_BIND));
         threadPool(16, 2, 30000);
         get("/", (request, response) -> {
             response.status(404);
             response.type("application/text");
             return "This endpoint is not available.";
         });
+
         path("/", () -> before("v1/*", (request, response) -> response.type("application/json")));
         path("/v1", () -> {
             /* Tracks */

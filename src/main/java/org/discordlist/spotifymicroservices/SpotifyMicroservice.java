@@ -2,6 +2,7 @@ package org.discordlist.spotifymicroservices;
 
 import org.discordlist.spotifymicroservices.config.Config;
 import org.discordlist.spotifymicroservices.controller.ArtistController;
+import org.discordlist.spotifymicroservices.controller.PlaylistController;
 import org.discordlist.spotifymicroservices.controller.TrackController;
 import org.discordlist.spotifymicroservices.requests.handler.TokenHandler;
 import org.discordlist.spotifymicroservices.services.impl.AlbumService;
@@ -53,13 +54,13 @@ public class SpotifyMicroservice {
             get("/artists/:id", ArtistController.GET_ARTIST);
             get("/artists/:id/top-tracks", ArtistController.GET_ARTISTS_TOP_TRACKS);
             get("/artists/:id/top-tracks/:trackId", ArtistController.GET_ARTISTS_TOP_TRACK);
+            /* Playlists */
+            get("/playlists", PlaylistController.GET_PLAYLISTS);
+            get("/playlists/:id", PlaylistController.GET_PLAYLIST);
+            get("/playlists/:id/tracks", PlaylistController.GET_PLAYLIST_TRACKS);
+            get("/playlists/:id/tracks/:trackId", PlaylistController.GET_PLAYLIST_TRACK);
         });
 
-//        /* Playlists */
-//        get("/playlists", PlaylistController.GET_PLAYLISTS);
-//        get("/playlists/:id", PlaylistController.GET_PLAYLIST);
-//        get("/playlists/:id/tracks", PlaylistController.GET_PLAYLIST_TRACKS);
-//        get("/playlists/:id/tracks/:trackId", PlaylistController.GET_PLAYLIST_TRACK);
 //        /* Albums */
 //        get("/albums", AlbumController.GET_ALBUMS);
 //        get("/albums/:id", AlbumController.GET_ALBUM);

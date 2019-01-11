@@ -33,9 +33,9 @@ public class PlaylistController {
 
     public static final Route GET_PLAYLIST_TRACK = (request, response) -> {
         String id = request.params(":id");
-        if (!service.exists(id)) {
-            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Playlist does not exist"));
-        }
+//        if (!service.exists(id)) {
+//            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Playlist does not exist"));
+//        }
         String trackId = request.params(":trackId");
         Playlist playlist = service.get(id);
         Track track = playlist.getTracks().stream().filter(t -> t.getId().equals(trackId)).findFirst().orElse(null);

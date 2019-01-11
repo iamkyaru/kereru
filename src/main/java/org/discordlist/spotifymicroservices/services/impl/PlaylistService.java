@@ -7,13 +7,14 @@ import org.discordlist.spotifymicroservices.services.IService;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlaylistService implements IService<Playlist> {
 
     private final Map<String, Playlist> playlistMap;
 
     public PlaylistService() {
-        this.playlistMap = new HashMap<>();
+        this.playlistMap = new ConcurrentHashMap<>();
     }
 
     @Override

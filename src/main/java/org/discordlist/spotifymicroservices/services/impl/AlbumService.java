@@ -5,23 +5,34 @@ import org.discordlist.spotifymicroservices.exceptions.AlbumException;
 import org.discordlist.spotifymicroservices.services.IService;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AlbumService implements IService<Album> {
 
     private final Map<String, Album> albumMap;
 
     public AlbumService() {
-        this.albumMap = new HashMap<>();
+        this.albumMap = new ConcurrentHashMap<>();
     }
 
+
+    /**
+     * Add an Album to the in-memory cache.
+     *
+     * @param album the album which should be added.
+     */
     @Override
     public void add(Album album) {
         if (album != null)
             this.albumMap.put(album.getId(), album);
     }
 
+    /**
+     * Get all cached values.
+     *
+     * @return all cached values.
+     */
     @Override
     public Collection<Album> getCachedValues() {
         return this.albumMap.values();

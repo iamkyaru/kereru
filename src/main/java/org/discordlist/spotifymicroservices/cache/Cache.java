@@ -23,7 +23,7 @@ public abstract class Cache<T extends Cacheable> {
 
     public T get(String id) {
         try (Jedis jedis = redis.pool().getResource()) {
-            if (!jedis.exists(path + "." + id))
+            if (exist(id))
                 return fetchAndCacheEntity(id);
             String res = jedis.hget(path, id);
             return gson.fromJson(res, typeParameterClass);
@@ -39,6 +39,12 @@ public abstract class Cache<T extends Cacheable> {
     public void delete(String id) {
         try (Jedis jedis = redis.pool().getResource()) {
             jedis.hdel(path, id);
+        }
+    }
+
+    public boolean exist(String id) {
+        try (Jedis jedis = redis.pool().getResource()) {
+            return jedis.hexists(path, id);
         }
     }
 

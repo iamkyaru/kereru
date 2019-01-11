@@ -1,5 +1,6 @@
 package org.discordlist.spotifymicroservices;
 
+import org.discordlist.spotifymicroservices.controller.PlaylistController;
 import org.discordlist.spotifymicroservices.controller.TrackController;
 import org.discordlist.spotifymicroservices.entities.Album;
 import org.discordlist.spotifymicroservices.entities.Artist;
@@ -7,7 +8,6 @@ import org.discordlist.spotifymicroservices.entities.Playlist;
 import org.discordlist.spotifymicroservices.entities.Track;
 import org.discordlist.spotifymicroservices.services.IService;
 import org.discordlist.spotifymicroservices.services.impl.TrackService;
-import org.slf4j.impl.SimpleLogger;
 
 import static spark.Spark.*;
 
@@ -19,7 +19,7 @@ public class SpotifyMicroservice {
     private static IService<Artist> artistService;
 
     private SpotifyMicroservice() {
-        trackService = new TrackService("", "");
+        trackService = new TrackService("86d1c97572574b32b8f7a7edcd543b64", "11ab070df21d4e3b8eef2d47f0554a31");
 //        playlistService = new PlaylistService();
 //        albumService = new AlbumService();
 //        artistService = new ArtistService();
@@ -36,17 +36,14 @@ public class SpotifyMicroservice {
             /* Tracks */
             get("/tracks", TrackController.GET_CACHED_TRACKS);
             get("/tracks/:id", TrackController.GET_TRACK);
+            /* Playlists */
+            get("/playlists", PlaylistController.GET_PLAYLISTS);
+            get("/playlists/:id", PlaylistController.GET_PLAYLIST);
+            get("/playlists/:id/tracks", PlaylistController.GET_PLAYLIST_TRACKS);
+            get("/playlists/:id/tracks/:trackId", PlaylistController.GET_PLAYLIST_TRACK);
+            put("/playlists/:id", PlaylistController.PUT_PLAYLIST);
         });
 
-//        /* Playlists */
-//        post("/playlists", PlaylistController.POST_PLAYLIST);
-//        get("/playlists", PlaylistController.GET_PLAYLISTS);
-//        get("/playlists/:id", PlaylistController.GET_PLAYLIST);
-//        get("/playlists/:id/tracks", PlaylistController.GET_PLAYLIST_TRACKS);
-//        get("/playlists/:id/tracks/:trackId", PlaylistController.GET_PLAYLIST_TRACK);
-//        put("/playlists/:id", PlaylistController.PUT_PLAYLIST);
-//        delete("/playlists/:id", PlaylistController.DELETE_PLAYLIST);
-//        options("/playlists/:id", PlaylistController.OPTIONS_PLAYLIST);
 //        /* Albums */
 //        post("/albums", AlbumController.POST_ALBUM);
 //        get("/albums", AlbumController.GET_ALBUMS);

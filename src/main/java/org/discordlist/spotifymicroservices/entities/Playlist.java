@@ -1,8 +1,10 @@
 package org.discordlist.spotifymicroservices.entities;
 
+import org.discordlist.spotifymicroservices.cache.Cacheable;
+
 import java.util.List;
 
-public class Playlist {
+public class Playlist implements Cacheable {
 
     private final String id;
     private String name;

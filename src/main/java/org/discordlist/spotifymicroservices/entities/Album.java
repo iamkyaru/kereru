@@ -1,8 +1,10 @@
 package org.discordlist.spotifymicroservices.entities;
 
+import org.discordlist.spotifymicroservices.cache.Cacheable;
+
 import java.util.List;
 
-public class Album {
+public class Album implements Cacheable {
 
     private final String id;
     private String name;
@@ -22,6 +24,7 @@ public class Album {
         this.tracks = tracks;
     }
 
+    @Override
     public String getId() {
         return this.id;
     }

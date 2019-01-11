@@ -1,5 +1,6 @@
 package org.discordlist.spotifymicroservices;
 
+import org.discordlist.spotifymicroservices.cache.RedisSession;
 import org.discordlist.spotifymicroservices.config.Config;
 import org.discordlist.spotifymicroservices.controller.ArtistController;
 import org.discordlist.spotifymicroservices.controller.PlaylistController;
@@ -21,6 +22,7 @@ public class SpotifyMicroservice {
     private static SpotifyMicroservice instance;
     private final YamlFile config;
     private final TokenHandler tokenHandler;
+    private RedisSession redisSession;
 
     private TrackService trackService;
     private ArtistService artistService;
@@ -29,13 +31,14 @@ public class SpotifyMicroservice {
 
     private SpotifyMicroservice() throws IOException, InvalidConfigurationException {
         instance = this;
-        config = new Config("config.yml").load();
-        tokenHandler = new TokenHandler(config.getString(Config.SPOTIFY_CLIENT_ID), config.getString(Config.SPOTIFY_CLIENT_SECRET));
+        this.config = new Config("config.yml").load();
+        this.tokenHandler = new TokenHandler(config.getString(Config.SPOTIFY_CLIENT_ID), config.getString(Config.SPOTIFY_CLIENT_SECRET));
+        this.redisSession = new RedisSession(config.getString(Config.REDIS_HOST), config.getInt(Config.REDIS_PORT), config.getString(Config.REDIS_PASSWORD));
 
-        trackService = new TrackService();
-        artistService = new ArtistService();
-//        playlistService = new PlaylistService();
-//        albumService = new AlbumService();
+        this.trackService = new TrackService(redisSession);
+        this.artistService = new ArtistService();
+//        this.playlistService = new PlaylistService();
+//        this.albumService = new AlbumService();
 
         port(config.getInt(Config.SERVICE_PORT));
         ipAddress(config.getString(Config.SERVICE_BIND));
@@ -92,6 +95,10 @@ public class SpotifyMicroservice {
 
     public TokenHandler getTokenHandler() {
         return this.tokenHandler;
+    }
+
+    public RedisSession getRedisSession() {
+        return this.redisSession;
     }
 
     public static SpotifyMicroservice getInstance() {

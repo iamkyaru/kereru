@@ -1,9 +1,12 @@
 package org.discordlist.spotifymicroservices.cache;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import redis.clients.jedis.Jedis;
 
-public class Cache<T> {
+public abstract class Cache<T> {
 
+    private final Gson gson;
     private final Class<T> typeParameterClass;
     private final String path;
     private final RedisSession redis;
@@ -12,16 +15,25 @@ public class Cache<T> {
         this.typeParameterClass = typeParameterClass;
         this.path = path;
         this.redis = redis;
+        this.gson = new GsonBuilder().create();
     }
 
     public T get(String id) {
         try (Jedis jedis = redis.pool().getResource()) {
+            if (!jedis.exists(path + "." + id))
+                return fetchAndCacheEntity(id);
             String res = jedis.get(path + "." + id);
-            System.out.println(res);
-            return null;
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return null;
+            return gson.fromJson(res, typeParameterClass);
         }
     }
+
+    private T fetchAndCacheEntity(String id) {
+        T entity = fetchEntity(id);
+        try (Jedis jedis = redis.pool().getResource()) {
+            jedis.set(path + "." + id, gson.toJson(entity));
+        }
+        return entity;
+    }
+
+    public abstract T fetchEntity(String id);
 }

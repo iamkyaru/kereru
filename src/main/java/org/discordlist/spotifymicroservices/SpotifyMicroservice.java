@@ -4,13 +4,10 @@ import org.discordlist.spotifymicroservices.configuration.Configuration;
 import org.discordlist.spotifymicroservices.configuration.ConfigurationSetup;
 import org.discordlist.spotifymicroservices.controller.ArtistController;
 import org.discordlist.spotifymicroservices.controller.TrackController;
-import org.discordlist.spotifymicroservices.entities.Album;
-import org.discordlist.spotifymicroservices.entities.Artist;
-import org.discordlist.spotifymicroservices.entities.Playlist;
-import org.discordlist.spotifymicroservices.entities.Track;
 import org.discordlist.spotifymicroservices.requests.handler.TokenHandler;
-import org.discordlist.spotifymicroservices.services.IService;
+import org.discordlist.spotifymicroservices.services.impl.AlbumService;
 import org.discordlist.spotifymicroservices.services.impl.ArtistService;
+import org.discordlist.spotifymicroservices.services.impl.PlaylistService;
 import org.discordlist.spotifymicroservices.services.impl.TrackService;
 
 import static spark.Spark.*;
@@ -21,10 +18,10 @@ public class SpotifyMicroservice {
     private final Configuration config;
     private final TokenHandler tokenHandler;
 
-    private IService<Track> trackService;
-    private IService<Artist> artistService;
-    private IService<Playlist> playlistService;
-    private IService<Album> albumService;
+    private TrackService trackService;
+    private ArtistService artistService;
+    private PlaylistService playlistService;
+    private AlbumService albumService;
 
     private SpotifyMicroservice() {
         instance = this;
@@ -71,19 +68,19 @@ public class SpotifyMicroservice {
         return this.config;
     }
 
-    public IService<Track> getTrackService() {
+    public TrackService getTrackService() {
         return this.trackService;
     }
 
-    public IService<Playlist> getPlaylistService() {
+    public PlaylistService getPlaylistService() {
         return this.playlistService;
     }
 
-    public IService<Album> getAlbumService() {
+    public AlbumService getAlbumService() {
         return this.albumService;
     }
 
-    public IService<Artist> getArtistService() {
+    public ArtistService getArtistService() {
         return this.artistService;
     }
 

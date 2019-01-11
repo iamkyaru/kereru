@@ -12,7 +12,7 @@ import spark.Route;
 public class AlbumController {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final IService<Album> service = SpotifyMicroservice.getAlbumService();
+    private static final IService<Album> service = SpotifyMicroservice.getInstance().getAlbumService();
 
     public static final Route POST_ALBUM = (request, response) -> {
         if (request.body() == null || request.body().isEmpty())

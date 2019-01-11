@@ -12,7 +12,7 @@ import spark.Route;
 public class ArtistController {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final IService<Artist> service = SpotifyMicroservice.getArtistService();
+    private static final IService<Artist> service = SpotifyMicroservice.getInstance().getArtistService();
 
     public static final Route GET_ARTISTS = (request, response)
             -> GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCachedValues())));

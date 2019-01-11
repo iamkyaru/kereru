@@ -12,7 +12,7 @@ import spark.Route;
 public class PlaylistController {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final IService<Playlist> service = SpotifyMicroservice.getPlaylistService();
+    private static final IService<Playlist> service = SpotifyMicroservice.getInstance().getPlaylistService();
 
     public static final Route POST_PLAYLIST = (request, response) -> {
         if (request.body() == null || request.body().isEmpty())

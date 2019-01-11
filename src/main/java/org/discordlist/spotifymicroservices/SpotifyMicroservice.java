@@ -1,12 +1,14 @@
 package org.discordlist.spotifymicroservices;
 
+import org.discordlist.spotifymicroservices.configuration.Configuration;
+import org.discordlist.spotifymicroservices.configuration.ConfigurationSetup;
 import org.discordlist.spotifymicroservices.controller.ArtistController;
-import org.discordlist.spotifymicroservices.controller.PlaylistController;
 import org.discordlist.spotifymicroservices.controller.TrackController;
 import org.discordlist.spotifymicroservices.entities.Album;
 import org.discordlist.spotifymicroservices.entities.Artist;
 import org.discordlist.spotifymicroservices.entities.Playlist;
 import org.discordlist.spotifymicroservices.entities.Track;
+import org.discordlist.spotifymicroservices.requests.handler.TokenHandler;
 import org.discordlist.spotifymicroservices.services.IService;
 import org.discordlist.spotifymicroservices.services.impl.ArtistService;
 import org.discordlist.spotifymicroservices.services.impl.TrackService;
@@ -15,14 +17,22 @@ import static spark.Spark.*;
 
 public class SpotifyMicroservice {
 
-    private static IService<Track> trackService;
-    private static IService<Artist> artistService;
-    private static IService<Playlist> playlistService;
-    private static IService<Album> albumService;
+    private static SpotifyMicroservice instance;
+    private final Configuration config;
+    private final TokenHandler tokenHandler;
+
+    private IService<Track> trackService;
+    private IService<Artist> artistService;
+    private IService<Playlist> playlistService;
+    private IService<Album> albumService;
 
     private SpotifyMicroservice() {
-        trackService = new TrackService("", "");
-        artistService = new ArtistService("", "");
+        instance = this;
+        config = ConfigurationSetup.setupConfig().init();
+        tokenHandler = new TokenHandler(config.getJSONObject("spotify"));
+
+        trackService = new TrackService();
+        artistService = new ArtistService();
 //        playlistService = new PlaylistService();
 //        albumService = new AlbumService();
 
@@ -57,20 +67,32 @@ public class SpotifyMicroservice {
 //        get("/albums/:id/tracks/:trackId", AlbumController.GET_ALBUM_TRACK);
     }
 
-    public static IService<Track> getTrackService() {
-        return trackService;
+    public Configuration getConfig() {
+        return this.config;
     }
 
-    public static IService<Playlist> getPlaylistService() {
-        return playlistService;
+    public IService<Track> getTrackService() {
+        return this.trackService;
     }
 
-    public static IService<Album> getAlbumService() {
-        return albumService;
+    public IService<Playlist> getPlaylistService() {
+        return this.playlistService;
     }
 
-    public static IService<Artist> getArtistService() {
-        return artistService;
+    public IService<Album> getAlbumService() {
+        return this.albumService;
+    }
+
+    public IService<Artist> getArtistService() {
+        return this.artistService;
+    }
+
+    public TokenHandler getTokenHandler() {
+        return this.tokenHandler;
+    }
+
+    public static SpotifyMicroservice getInstance() {
+        return instance;
     }
 
     public static void main(String[] args) {

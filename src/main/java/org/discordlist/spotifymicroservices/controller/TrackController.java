@@ -11,7 +11,7 @@ import spark.Route;
 public class TrackController {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final IService<Track> service = SpotifyMicroservice.getTrackService();
+    private static final IService<Track> service = SpotifyMicroservice.getInstance().getTrackService();
 
     public static final Route GET_CACHED_TRACKS = (request, response)
             -> GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCachedValues())));

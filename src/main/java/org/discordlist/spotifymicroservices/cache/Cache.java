@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import redis.clients.jedis.Jedis;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ public abstract class Cache<T extends Cacheable> {
         }
     }
 
-    public void update(Cacheable cacheable) {
+    public void update(@Nonnull Cacheable cacheable) {
         try (Jedis jedis = redis.pool().getResource()) {
             jedis.hset(path, cacheable.getId(), gson.toJson(cacheable));
         }
@@ -62,6 +63,8 @@ public abstract class Cache<T extends Cacheable> {
 
     private T fetchAndCacheEntity(String id) {
         T entity = fetchEntity(id);
+        if (entity == null)
+            return null;
         update(entity);
         return entity;
     }

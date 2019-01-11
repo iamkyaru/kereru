@@ -12,6 +12,8 @@ public class RedisSession {
     }
 
     public RedisSession(String host, int port, String password) {
+        if (password.isEmpty())
+            password = null;
         JedisPoolConfig config = new JedisPoolConfig();
         pool = new JedisPool(config, host, port, 0, password);
     }

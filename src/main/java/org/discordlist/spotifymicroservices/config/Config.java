@@ -9,6 +9,9 @@ public class Config {
 
     public static String SERVICE_PORT = "service.port";
     public static String SERVICE_BIND = "service.bind";
+    public static String REDIS_HOST = "redis.host";
+    public static String REDIS_PORT = "redis.port";
+    public static String REDIS_PASSWORD = "redis.password";
     public static String SPOTIFY_CLIENT_ID = "spotify.client.id";
     public static String SPOTIFY_CLIENT_SECRET = "spotify.client.secret";
 
@@ -32,6 +35,11 @@ public class Config {
         // Service
         saveDefault(SERVICE_PORT, 1337);
         saveDefault(SERVICE_BIND, "localhost");
+
+        // Redis
+        saveDefault(REDIS_HOST, "localhost");
+        saveDefault(REDIS_PORT, 6379);
+        saveDefault(REDIS_PASSWORD, "");
 
         // Spotify
         saveDefault(SPOTIFY_CLIENT_ID, "1337");

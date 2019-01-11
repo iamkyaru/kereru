@@ -40,11 +40,12 @@ public class TrackService extends AbstractRequest implements IService<Track> {
                     .get()
                     .build();
             try (Response response = httpClient.newCall(request).execute()) {
-                assert response.body() != null;
-                JsonObject jsonObject = (JsonObject) new JsonParser().parse(response.body().string());
-                return makeTrack(jsonObject);
+                if (response.body() != null) {
+                    JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                    return makeTrack(jsonObject);
+                }
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("Could not fetch Track", e);
             }
         }
         return null;

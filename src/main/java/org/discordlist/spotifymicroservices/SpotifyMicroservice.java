@@ -7,6 +7,7 @@ import org.discordlist.spotifymicroservices.entities.Playlist;
 import org.discordlist.spotifymicroservices.entities.Track;
 import org.discordlist.spotifymicroservices.services.IService;
 import org.discordlist.spotifymicroservices.services.impl.TrackService;
+import org.slf4j.impl.SimpleLogger;
 
 import static spark.Spark.*;
 
@@ -18,7 +19,7 @@ public class SpotifyMicroservice {
     private static IService<Artist> artistService;
 
     private SpotifyMicroservice() {
-        trackService = new TrackService("");
+        trackService = new TrackService("", "");
 //        playlistService = new PlaylistService();
 //        albumService = new AlbumService();
 //        artistService = new ArtistService();
@@ -30,7 +31,7 @@ public class SpotifyMicroservice {
             response.type("application/text");
             return "This endpoint is not available.";
         });
-        path("/", () -> before("/v1/*", (request, response) -> response.type("application/json")));
+        path("/", () -> before("v1/*", (request, response) -> response.type("application/json")));
         path("/v1", () -> {
             /* Tracks */
             get("/tracks", TrackController.GET_CACHED_TRACKS);

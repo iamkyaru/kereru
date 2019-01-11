@@ -2,36 +2,23 @@ package org.discordlist.spotifymicroservices.services.impl;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.discordlist.spotifymicroservices.entities.Artist;
 import org.discordlist.spotifymicroservices.entities.Track;
+import org.discordlist.spotifymicroservices.requests.AbstractRequest;
 import org.discordlist.spotifymicroservices.services.IService;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
-public class TrackService implements IService<Track> {
+public class TrackService extends AbstractRequest implements IService<Track> {
 
     private final Map<String, Track> trackMap;
-    private final OkHttpClient httpClient;
-    private static final String API_BASE = "https://api.spotify.com/v1";
 
-    public TrackService(String accessToken) {
+    public TrackService(String clientId, String clientSecret) {
+        super(clientId, clientSecret);
         this.trackMap = new HashMap<>();
-        this.httpClient = new OkHttpClient.Builder()
-                .addInterceptor(chain -> {
-                    Request.Builder builder = chain.request().newBuilder()
-                            .addHeader("Content-Type", "application/json")
-                            .addHeader("Authorization", "Bearer " + accessToken);
-                    return chain.proceed(builder.build());
-                })
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30, TimeUnit.SECONDS)
-                .build();
     }
 
     @Override

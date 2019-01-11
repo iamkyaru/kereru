@@ -21,6 +21,15 @@ public abstract class Cache<T extends Cacheable> {
         this.gson = new GsonBuilder().create();
     }
 
+    public T get(String id) {
+        try (Jedis jedis = redis.pool().getResource()) {
+            if (!jedis.exists(path + "." + id))
+                return fetchAndCacheEntity(id);
+            String res = jedis.hget(path, id);
+            return gson.fromJson(res, typeParameterClass);
+        }
+    }
+
     public void update(Cacheable cacheable) {
         try (Jedis jedis = redis.pool().getResource()) {
             jedis.hset(path, cacheable.getId(), gson.toJson(cacheable));
@@ -29,7 +38,7 @@ public abstract class Cache<T extends Cacheable> {
 
     public void delete(String id) {
         try (Jedis jedis = redis.pool().getResource()) {
-            jedis.del(path + "." + id);
+            jedis.hdel(path, id);
         }
     }
 
@@ -39,12 +48,9 @@ public abstract class Cache<T extends Cacheable> {
         }
     }
 
-    public T get(String id) {
+    public void clear() {
         try (Jedis jedis = redis.pool().getResource()) {
-            if (!jedis.exists(path + "." + id))
-                return fetchAndCacheEntity(id);
-            String res = jedis.hget(path, id);
-            return gson.fromJson(res, typeParameterClass);
+            jedis.del(path);
         }
     }
 

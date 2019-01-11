@@ -32,7 +32,7 @@ public class TrackService extends AbstractRequest implements IService<Track> {
     }
 
     /**
-     * Add an {@link Track} to the in-memory cache.
+     * Add an {@link Track} to the cache.
      *
      * @param track the track which should be added.
      */
@@ -115,7 +115,7 @@ public class TrackService extends AbstractRequest implements IService<Track> {
     /**
      * Deletes the given {@link Track} id from the cache.
      *
-     * @param id the {@link Track} id, which is wanted to be deleted from the in-memory cache.
+     * @param id the {@link Track} id, which is wanted to be deleted from the cache.
      */
     @Override
     public void delete(String id) {
@@ -123,10 +123,10 @@ public class TrackService extends AbstractRequest implements IService<Track> {
     }
 
     /**
-     * Returns the existence of an Track from the given {@link Track} id.
+     * Returns the existence of an {@link Track} from the given {@link Track} id.
      *
      * @param id the {@link Track} id
-     * @return true, if the id is saved in the {@link java.util.concurrent.ConcurrentMap}, otherwise false.
+     * @return true, if the id is saved in the {@link Cache<Track>}, otherwise false.
      */
     @Override
     public boolean exists(String id) {

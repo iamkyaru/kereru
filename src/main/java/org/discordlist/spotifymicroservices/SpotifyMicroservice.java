@@ -1,5 +1,6 @@
 package org.discordlist.spotifymicroservices;
 
+import org.discordlist.spotifymicroservices.controller.ArtistController;
 import org.discordlist.spotifymicroservices.controller.PlaylistController;
 import org.discordlist.spotifymicroservices.controller.TrackController;
 import org.discordlist.spotifymicroservices.entities.Album;
@@ -7,6 +8,7 @@ import org.discordlist.spotifymicroservices.entities.Artist;
 import org.discordlist.spotifymicroservices.entities.Playlist;
 import org.discordlist.spotifymicroservices.entities.Track;
 import org.discordlist.spotifymicroservices.services.IService;
+import org.discordlist.spotifymicroservices.services.impl.ArtistService;
 import org.discordlist.spotifymicroservices.services.impl.TrackService;
 
 import static spark.Spark.*;
@@ -14,15 +16,15 @@ import static spark.Spark.*;
 public class SpotifyMicroservice {
 
     private static IService<Track> trackService;
+    private static IService<Artist> artistService;
     private static IService<Playlist> playlistService;
     private static IService<Album> albumService;
-    private static IService<Artist> artistService;
 
     private SpotifyMicroservice() {
-        trackService = new TrackService("86d1c97572574b32b8f7a7edcd543b64", "11ab070df21d4e3b8eef2d47f0554a31");
+        trackService = new TrackService("", "");
+        artistService = new ArtistService("", "");
 //        playlistService = new PlaylistService();
 //        albumService = new AlbumService();
-//        artistService = new ArtistService();
 
         port(1337);
         threadPool(16, 2, 30000);
@@ -36,32 +38,23 @@ public class SpotifyMicroservice {
             /* Tracks */
             get("/tracks", TrackController.GET_CACHED_TRACKS);
             get("/tracks/:id", TrackController.GET_TRACK);
-            /* Playlists */
-            get("/playlists", PlaylistController.GET_PLAYLISTS);
-            get("/playlists/:id", PlaylistController.GET_PLAYLIST);
-            get("/playlists/:id/tracks", PlaylistController.GET_PLAYLIST_TRACKS);
-            get("/playlists/:id/tracks/:trackId", PlaylistController.GET_PLAYLIST_TRACK);
-            put("/playlists/:id", PlaylistController.PUT_PLAYLIST);
+            /* Artists */
+            get("/artists", ArtistController.GET_ARTISTS);
+            get("/artists/:id", ArtistController.GET_ARTIST);
+            get("/artists/:id/top-tracks", ArtistController.GET_ARTISTS_TOP_TRACKS);
+            get("/artists/:id/top-tracks/:trackId", ArtistController.GET_ARTISTS_TOP_TRACK);
         });
 
+//        /* Playlists */
+//        get("/playlists", PlaylistController.GET_PLAYLISTS);
+//        get("/playlists/:id", PlaylistController.GET_PLAYLIST);
+//        get("/playlists/:id/tracks", PlaylistController.GET_PLAYLIST_TRACKS);
+//        get("/playlists/:id/tracks/:trackId", PlaylistController.GET_PLAYLIST_TRACK);
 //        /* Albums */
-//        post("/albums", AlbumController.POST_ALBUM);
 //        get("/albums", AlbumController.GET_ALBUMS);
 //        get("/albums/:id", AlbumController.GET_ALBUM);
 //        get("/albums/:id/tracks", AlbumController.GET_ALBUM_TRACKS);
 //        get("/albums/:id/tracks/:trackId", AlbumController.GET_ALBUM_TRACK);
-//        put("/albums/:id", AlbumController.PUT_ALBUM);
-//        delete("/albums/:id", AlbumController.DELETE_ALBUM);
-//        options("/albums/:id", AlbumController.OPTIONS_ALBUM);
-//        /* Artists */
-//        post("/artists", ArtistController.POST_ARTIST);
-//        get("/artists", ArtistController.GET_ARTISTS);
-//        get("/artists/:id", ArtistController.GET_ARTIST);
-//        get("/artists/:id/top-tracks", ArtistController.GET_ARTISTS_TOP_TRACKS);
-//        get("/artists/:id/top-tracks/:trackId", ArtistController.GET_ARTISTS_TOP_TRACK);
-//        put("/artists/:id", ArtistController.PUT_ARTIST);
-//        delete("/artists/:id", ArtistController.DELETE_ARTIST);
-//        options("/artists/:id", ArtistController.OPTIONS_ARTIST);
     }
 
     public static IService<Track> getTrackService() {

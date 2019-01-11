@@ -7,6 +7,7 @@ import okhttp3.Response;
 import org.discordlist.spotifymicroservices.entities.Artist;
 import org.discordlist.spotifymicroservices.requests.AbstractRequest;
 import org.discordlist.spotifymicroservices.services.IService;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.*;
@@ -15,8 +16,8 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
 
     private final Map<String, Artist> artistMap;
 
-    public ArtistService(String clientId, String clientSecret) {
-        super(clientId, clientSecret);
+    public ArtistService() {
+        super();
         this.artistMap = new HashMap<>();
     }
 

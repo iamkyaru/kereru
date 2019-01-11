@@ -8,6 +8,7 @@ import org.discordlist.spotifymicroservices.entities.Artist;
 import org.discordlist.spotifymicroservices.entities.Track;
 import org.discordlist.spotifymicroservices.requests.AbstractRequest;
 import org.discordlist.spotifymicroservices.services.IService;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.*;
@@ -16,8 +17,8 @@ public class TrackService extends AbstractRequest implements IService<Track> {
 
     private final Map<String, Track> trackMap;
 
-    public TrackService(String clientId, String clientSecret) {
-        super(clientId, clientSecret);
+    public TrackService() {
+        super();
         this.trackMap = new HashMap<>();
     }
 

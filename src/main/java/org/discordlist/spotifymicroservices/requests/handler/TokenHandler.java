@@ -2,16 +2,15 @@ package org.discordlist.spotifymicroservices.requests.handler;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.extern.log4j.Log4j2;
 import okhttp3.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+@Log4j2
 public class TokenHandler {
 
-    private final Logger logger = LoggerFactory.getLogger(TokenHandler.class);
     private OkHttpClient httpClient;
     private String clientId, clientSecret;
 
@@ -29,7 +28,7 @@ public class TokenHandler {
         retrieveAccessToken();
     }
 
-    public String getToken() {
+    public String token() {
         refreshTokenIfNecessary();
         return this.accessToken;
     }
@@ -38,13 +37,13 @@ public class TokenHandler {
         if (System.currentTimeMillis() > this.tokenExpireTime) try {
             retrieveAccessToken();
         } catch (Exception e) {
-            logger.error("Could not refresh the access token!", e);
+            log.error("[TokenHandler] Could not refresh the access token!", e);
         }
     }
 
     private void retrieveAccessToken() {
         if (this.clientId.isEmpty() || this.clientSecret.isEmpty()) {
-            logger.info("The clientId or the clientSecret haven't been set correctly! Please configure your Spotify credentials, to use the Spotify api.");
+            log.info("[TokenHandler] The clientId or the clientSecret haven't been set correctly! Please configure your Spotify credentials, to use the Spotify api.");
             return;
         }
 
@@ -60,11 +59,11 @@ public class TokenHandler {
                 if (jsonObject.has("access_token")) {
                     this.accessToken = jsonObject.get("access_token").getAsString();
                     this.tokenExpireTime = System.currentTimeMillis() + (jsonObject.get("expires_in").getAsInt() * 1000);
-                    logger.info("Received access token: {} which expires in: {} seconds.", accessToken, jsonObject.get("expires_in").getAsInt());
+                    log.info("[TokenHandler] Received access token: * which expires in: {} seconds.", jsonObject.get("expires_in").getAsInt());
                 }
             }
         } catch (IOException e) {
-            logger.error("The access token could not be retrieved.", e);
+            log.error("[TokenHandler] The access token could not be retrieved.", e);
         }
     }
 }

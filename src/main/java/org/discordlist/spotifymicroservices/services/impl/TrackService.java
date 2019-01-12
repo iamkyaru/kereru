@@ -25,7 +25,7 @@ public class TrackService extends AbstractRequest implements IService<Track> {
         super();
         this.cache = new Cache<Track>(Track.class, "spotify.tracks", redisSession) {
             @Override
-            public Track fetchEntity(String id) {
+            public Track fetch(String id) {
                 return TrackService.this.get(id);
             }
         };

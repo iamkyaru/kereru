@@ -65,4 +65,9 @@ public class Artist implements Cacheable {
     public void setTopTracks(List<Track> topTracks) {
         this.topTracks = topTracks;
     }
+
+    @Override
+    public String id() {
+        return id;
+    }
 }

@@ -1,5 +1,11 @@
 package org.discordlist.spotifymicroservices;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.ConfigurationSource;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.discordlist.spotifymicroservices.cache.RedisSession;
 import org.discordlist.spotifymicroservices.config.Config;
 import org.discordlist.spotifymicroservices.controller.ArtistController;
@@ -14,20 +20,24 @@ import org.simpleyaml.configuration.file.YamlFile;
 import org.simpleyaml.exceptions.InvalidConfigurationException;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static spark.Spark.*;
 
+@Log4j2
+@Accessors(fluent = true)
+@Getter
 public class SpotifyMicroservice {
 
     private static SpotifyMicroservice instance;
     private final YamlFile config;
     private final TokenHandler tokenHandler;
-    private RedisSession redisSession;
+    private final RedisSession redisSession;
 
-    private TrackService trackService;
-    private ArtistService artistService;
-    private PlaylistService playlistService;
-    private AlbumService albumService;
+    private final TrackService trackService;
+    private final ArtistService artistService;
+    private final PlaylistService playlistService;
+    private final AlbumService albumService = null;
 
     private SpotifyMicroservice() throws IOException, InvalidConfigurationException {
         instance = this;
@@ -39,7 +49,6 @@ public class SpotifyMicroservice {
         this.artistService = new ArtistService();
         this.playlistService = new PlaylistService(redisSession);
 //        this.albumService = new AlbumService();
-
 
 
         port(config.getInt(Config.SERVICE_PORT));
@@ -75,39 +84,13 @@ public class SpotifyMicroservice {
 //        get("/albums/:id/tracks/:trackId", AlbumController.GET_ALBUM_TRACK);
     }
 
-    public YamlFile getConfig() {
-        return this.config;
-    }
-
-    public TrackService getTrackService() {
-        return this.trackService;
-    }
-
-    public PlaylistService getPlaylistService() {
-        return this.playlistService;
-    }
-
-    public AlbumService getAlbumService() {
-        return this.albumService;
-    }
-
-    public ArtistService getArtistService() {
-        return this.artistService;
-    }
-
-    public TokenHandler getTokenHandler() {
-        return this.tokenHandler;
-    }
-
-    public RedisSession getRedisSession() {
-        return this.redisSession;
-    }
-
     public static SpotifyMicroservice getInstance() {
         return instance;
     }
 
     public static void main(String[] args) throws IOException, InvalidConfigurationException {
+        Configurator.setRootLevel(Level.toLevel(args[0], Level.INFO));
+        Configurator.initialize(ClassLoader.getSystemClassLoader(), new ConfigurationSource(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("log4j2.xml"))));
         new SpotifyMicroservice();
     }
 }

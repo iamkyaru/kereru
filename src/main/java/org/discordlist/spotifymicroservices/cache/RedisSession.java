@@ -1,10 +1,16 @@
 package org.discordlist.spotifymicroservices.cache;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
+import lombok.extern.log4j.Log4j2;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import javax.annotation.Nullable;
 
+@Log4j2
+@Accessors(fluent = true)
+@Getter
 public class RedisSession {
 
     private final JedisPool pool;
@@ -18,9 +24,6 @@ public class RedisSession {
             password = null;
         JedisPoolConfig config = new JedisPoolConfig();
         pool = new JedisPool(config, host, port, 0, password);
-    }
-
-    public JedisPool pool() {
-        return pool;
+        log.info("[Redis] Connected to: {}:{}", host, port);
     }
 }

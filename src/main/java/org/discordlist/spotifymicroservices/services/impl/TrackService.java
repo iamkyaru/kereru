@@ -92,7 +92,7 @@ public class TrackService extends AbstractRequest implements IService<Track> {
             String href = artistObject.get("href").getAsString();
             String uri = artistObject.get("uri").getAsString();
             String url = artistObject.get("external_urls").getAsJsonObject().get("spotify").getAsString();
-            artists.add(new Artist(artistId, name, url, href, uri, Collections.emptyList()));
+            artists.add(Artist.builder().id(artistId).name(name).url(url).href(href).uri(uri).topTracks(Collections.emptyList()).build());
         });
         String href = jsonObject.get("href").getAsString();
         String name = jsonObject.get("name").getAsString();
@@ -101,7 +101,16 @@ public class TrackService extends AbstractRequest implements IService<Track> {
         long duration = jsonObject.get("duration_ms").getAsLong();
         boolean local = jsonObject.get("is_local").getAsBoolean();
         boolean explicit = jsonObject.get("explicit").getAsBoolean();
-        return new Track(id, name, artists, url, duration, href, uri, local, explicit);
+        return Track.builder()
+        .id(id)
+        .name(name)
+        .artists(artists)
+        .uri(uri)
+        .url(url)
+        .durationTimeMillis(duration)
+        .href(href)
+        .local(local)
+        .explicit(explicit).build();
     }
 
     /**

@@ -31,8 +31,8 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
      */
     @Override
     public void add(Artist artist) {
-        if (artist != null)
-            this.artistMap.put(artist.getId(), artist);
+        //if (artist != null)
+        //this.artistMap.put(artist.getId(), artist);
     }
 
     /**
@@ -83,7 +83,13 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
         String uri = jsonObject.get("uri").getAsString();
         String url = jsonObject.get("external_urls").getAsJsonObject().get("spotify").getAsString();
         List<Track> tracks = getTopTracks(id);
-        return new Artist(id, name, url, href, uri, tracks);
+        return Artist.builder()
+                .id(id)
+                .name(name)
+                .url(url)
+                .href(href)
+                .uri(uri)
+                .topTracks(tracks).build();
     }
 
     /**

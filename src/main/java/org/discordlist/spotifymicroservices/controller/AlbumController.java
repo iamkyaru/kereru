@@ -20,7 +20,7 @@ public class AlbumController {
         if (request.body() == null || request.body().isEmpty())
             return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Empty request body"));
         Album album = GSON.fromJson(request.body(), Album.class);
-        if (album.getId() == null)
+        if (album.id() == null)
             return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Album not found"));
         service.add(album);
         return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS));
@@ -40,7 +40,7 @@ public class AlbumController {
         String id = request.params(":id");
         if (!service.exists(id))
             return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Album does not exist"));
-        return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(id).getTracks())));
+        return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(id).tracks())));
     };
 
     public static final Route GET_ALBUM_TRACK = (request, response) -> {
@@ -50,8 +50,8 @@ public class AlbumController {
         }
         String trackId = request.params(":trackId");
         Album album = service.get(id);
-        Track track = album.getTracks().stream().filter(t -> t.getId().equals(trackId)).findFirst().orElse(null);
-        if (track == null || album.getTracks().stream().noneMatch(t -> t.getId().equals(trackId))) {
+        Track track = album.tracks().stream().filter(t -> t.id().equals(trackId)).findFirst().orElse(null);
+        if (track == null || album.tracks().stream().noneMatch(t -> t.id().equals(trackId))) {
             return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Track does not exist"));
         }
         return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(track)));
@@ -59,7 +59,7 @@ public class AlbumController {
 
     public static final Route PUT_ALBUM = (request, response) -> {
         Album album = GSON.fromJson(request.body(), Album.class);
-        if (album.getId() == null || album.getId().isEmpty())
+        if (album.id() == null || album.id().isEmpty())
             return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Album not found"));
         Album editedAlbum = service.edit(album);
         if (editedAlbum != null)

@@ -28,7 +28,7 @@ public class ArtistController {
         String id = request.params(":id");
 //        if (!service.exists(id))
 //            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Artist does not exist"));
-        return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(id).getTopTracks())));
+        return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(id).topTracks())));
     };
 
     public static final Route GET_ARTISTS_TOP_TRACK = (request, response) -> {
@@ -37,8 +37,8 @@ public class ArtistController {
 //            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Artist does not exist"));
         String trackId = request.params(":trackId");
         Artist artist = service.get(id);
-        Track track = artist.getTopTracks().stream().filter(t -> t.getId().equals(trackId)).findFirst().orElse(null);
-        if (track == null || artist.getTopTracks().stream().noneMatch(t -> t.getId().equals(trackId))) {
+        Track track = artist.topTracks().stream().filter(t -> t.id().equals(trackId)).findFirst().orElse(null);
+        if (track == null || artist.topTracks().stream().noneMatch(t -> t.id().equals(trackId))) {
             return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Track does not exist"));
         }
         return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(track)));

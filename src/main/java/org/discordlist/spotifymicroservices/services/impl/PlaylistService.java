@@ -64,7 +64,7 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
     public Playlist get(String id) {
         if (id != null) {
             Request request = new Request.Builder()
-                    .url(API_BASE + "/playlists/" + id )
+                    .url(API_BASE + "/playlists/" + id)
                     .get()
                     .build();
             try (Response response = httpClient.newCall(request).execute()) {
@@ -87,7 +87,14 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
         String uri = jsonObject.get("uri").getAsString();
         String url = jsonObject.get("external_urls").getAsJsonObject().get("spotify").getAsString();
         List<Track> tracks = getTracks(id);
-        return new Playlist(id, name, owner, url, href, uri, tracks);
+        return Playlist.builder()
+                .id(id)
+                .name(name)
+                .owner(owner)
+                .href(href)
+                .uri(uri)
+                .tracks(tracks)
+                .url(url).build();
     }
 
     private List<Track> getTracks(String playlistId) {

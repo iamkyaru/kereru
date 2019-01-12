@@ -18,8 +18,8 @@ class CacheTest {
         redisSession = new RedisSession("localhost", 6379);
         trackCache = new Cache<Track>(Track.class, "spotify.tracks", redisSession) {
             @Override
-            public Track fetchEntity(String id) {
-                return new Track("123", null, null, null, 0, null, null, false, false);
+            public Track fetch(String id) {
+                return Track.builder().id("123").build();
             }
         };
     }

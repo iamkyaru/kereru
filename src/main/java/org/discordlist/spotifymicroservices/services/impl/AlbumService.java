@@ -16,7 +16,6 @@ public class AlbumService implements IService<Album> {
         this.albumMap = new ConcurrentHashMap<>();
     }
 
-
     /**
      * Add an Album to the in-memory cache.
      *
@@ -25,7 +24,7 @@ public class AlbumService implements IService<Album> {
     @Override
     public void add(Album album) {
         if (album != null)
-            this.albumMap.put(album.getId(), album);
+            this.albumMap.put(album.id(), album);
     }
 
     /**
@@ -48,23 +47,23 @@ public class AlbumService implements IService<Album> {
     @Override
     public Album edit(Album album) throws AlbumException {
         try {
-            if (album.getId() == null || album.getId().isEmpty())
+            if (album.id() == null || album.id().isEmpty())
                 throw new AlbumException("Album id cannot be null");
-            Album editedAlbum = this.albumMap.get(album.getId());
+            Album editedAlbum = this.albumMap.get(album.id());
             if (editedAlbum == null)
                 throw new AlbumException("Album not found");
-            if (album.getArtists() != null && !album.getArtists().isEmpty())
-                editedAlbum.setArtists(album.getArtists());
-            if (album.getHref() != null)
-                editedAlbum.setHref(album.getHref());
-            if (album.getName() != null)
-                editedAlbum.setName(album.getName());
-            if (album.getTracks() != null && !album.getTracks().isEmpty())
-                editedAlbum.setTracks(album.getTracks());
-            if (album.getUri() != null)
-                editedAlbum.setUri(album.getUri());
-            if (album.getUrl() != null)
-                editedAlbum.setUrl(album.getUrl());
+            if (album.artists() != null && !album.artists().isEmpty())
+                editedAlbum.artists(album.artists());
+            if (album.href() != null)
+                editedAlbum.href(album.href());
+            if (album.name() != null)
+                editedAlbum.name(album.name());
+            if (album.tracks() != null && !album.tracks().isEmpty())
+                editedAlbum.tracks(album.tracks());
+            if (album.uri() != null)
+                editedAlbum.uri(album.uri());
+            if (album.uri() != null)
+                editedAlbum.uri(album.uri());
             return editedAlbum;
         } catch (Exception e) {
             throw new AlbumException(e.getMessage());

@@ -28,7 +28,7 @@ public class PlaylistController {
         String id = request.params(":id");
 //        if (!service.exists(id))
 //            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Playlist does not exist"));
-        return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCache().get(id).getTracks())));
+        return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCache().get(id).tracks())));
     };
 
     public static final Route GET_PLAYLIST_TRACK = (request, response) -> {
@@ -38,8 +38,8 @@ public class PlaylistController {
 //        }
         String trackId = request.params(":trackId");
         Playlist playlist = service.getCache().get(id);
-        Track track = playlist.getTracks().stream().filter(t -> t.getId().equals(trackId)).findFirst().orElse(null);
-        if (track == null || playlist.getTracks().stream().noneMatch(t -> t.getId().equals(trackId))) {
+        Track track = playlist.tracks().stream().filter(t -> t.id().equals(trackId)).findFirst().orElse(null);
+        if (track == null || playlist.tracks().stream().noneMatch(t -> t.id().equals(trackId))) {
             return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Track does not exist"));
         }
         return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(track)));

@@ -32,8 +32,9 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
     public PlaylistService(RedisSession redisSession) {
         super();
         this.cache = new Cache<Playlist>(Playlist.class, "spotify.playlists", redisSession) {
+
             @Override
-            public Playlist fetchEntity(String id) {
+            public Playlist fetch(String id) {
                 return PlaylistService.this.get(id);
             }
         };
@@ -126,7 +127,7 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
         JsonArray jsonArray = jsonPage.getAsJsonArray("items");
         jsonArray.forEach(jsonElement -> {
             JsonObject jsonObject = jsonElement.getAsJsonObject().get("track").getAsJsonObject();
-            Track track = SpotifyMicroservice.getInstance().getTrackService().makeTrack(jsonObject);
+            Track track = SpotifyMicroservice.getInstance().trackService().makeTrack(jsonObject);
             tracks.add(track);
         });
         return tracks;

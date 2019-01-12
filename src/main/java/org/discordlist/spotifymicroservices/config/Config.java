@@ -1,10 +1,12 @@
 package org.discordlist.spotifymicroservices.config;
 
+import lombok.extern.log4j.Log4j2;
 import org.simpleyaml.configuration.file.YamlFile;
 import org.simpleyaml.exceptions.InvalidConfigurationException;
 
 import java.io.IOException;
 
+@Log4j2
 public class Config {
 
     public static String SERVICE_PORT = "service.port";
@@ -28,6 +30,7 @@ public class Config {
         config.load();
         setDefaults();
         config.save();
+        log.info("[Config] Loaded.");
         return config;
     }
 

@@ -24,7 +24,7 @@ public abstract class AbstractRequest {
                 .addInterceptor(chain -> {
                     Request.Builder builder = chain.request().newBuilder()
                             .addHeader("Content-Type", "application/json")
-                            .addHeader("Authorization", "Bearer " + SpotifyMicroservice.getInstance().getTokenHandler().getToken());
+                            .addHeader("Authorization", "Bearer " + SpotifyMicroservice.getInstance().tokenHandler().token());
                     return chain.proceed(builder.build());
                 })
                 .build();

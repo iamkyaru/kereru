@@ -2,6 +2,7 @@ package org.discordlist.spotifymicroservices.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import lombok.extern.log4j.Log4j2;
 import org.discordlist.spotifymicroservices.SpotifyMicroservice;
 import org.discordlist.spotifymicroservices.entities.Album;
 import org.discordlist.spotifymicroservices.entities.Track;
@@ -9,10 +10,11 @@ import org.discordlist.spotifymicroservices.response.StandardResponse;
 import org.discordlist.spotifymicroservices.services.IService;
 import spark.Route;
 
+@Log4j2
 public class AlbumController {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final IService<Album> service = SpotifyMicroservice.getInstance().getAlbumService();
+    private static final IService<Album> service = SpotifyMicroservice.getInstance().albumService();
 
     public static final Route POST_ALBUM = (request, response) -> {
         if (request.body() == null || request.body().isEmpty())

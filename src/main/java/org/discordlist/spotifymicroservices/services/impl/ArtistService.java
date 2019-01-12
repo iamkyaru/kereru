@@ -103,7 +103,7 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
                 JsonArray jsonArray = rootObject.getAsJsonArray("tracks");
                 jsonArray.forEach(jsonElement -> {
                     JsonObject jsonObject = jsonElement.getAsJsonObject();
-                    Track track = SpotifyMicroservice.getInstance().getTrackService().makeTrack(jsonObject);
+                    Track track = SpotifyMicroservice.getInstance().trackService().makeTrack(jsonObject);
                     tracks.add(track);
                 });
             }

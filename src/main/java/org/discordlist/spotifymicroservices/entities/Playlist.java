@@ -75,4 +75,9 @@ public class Playlist implements Cacheable {
     public void setTracks(List<Track> tracks) {
         this.tracks = tracks;
     }
+
+    @Override
+    public String id() {
+        return id;
+    }
 }

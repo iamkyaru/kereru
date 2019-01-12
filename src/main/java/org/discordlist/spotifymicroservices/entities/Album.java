@@ -24,7 +24,6 @@ public class Album implements Cacheable {
         this.tracks = tracks;
     }
 
-    @Override
     public String getId() {
         return this.id;
     }
@@ -75,5 +74,10 @@ public class Album implements Cacheable {
 
     public void setTracks(List<Track> tracks) {
         this.tracks = tracks;
+    }
+
+    @Override
+    public String id() {
+        return id;
     }
 }

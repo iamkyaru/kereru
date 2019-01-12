@@ -95,4 +95,9 @@ public class Track implements Cacheable {
     public void setExplicit(boolean explicit) {
         this.explicit = explicit;
     }
+
+    @Override
+    public String id() {
+        return id;
+    }
 }

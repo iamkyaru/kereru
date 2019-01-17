@@ -8,8 +8,6 @@ import lombok.extern.log4j.Log4j2;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URIBuilder;
 import org.discordlist.spotifymicroservice.SpotifyMicroservice;
 import org.discordlist.spotifymicroservice.cache.Cache;
 import org.discordlist.spotifymicroservice.cache.RedisSession;

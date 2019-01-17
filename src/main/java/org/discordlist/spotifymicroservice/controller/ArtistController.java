@@ -19,22 +19,22 @@ public class ArtistController {
 
     public static final Route GET_ARTIST = (request, response) -> {
         String id = request.params(":id");
-        if (!service.exists(id))
-            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Artist does not exist"));
+//        if (!service.exists(id))
+//            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Artist does not exist"));
         return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(id))));
     };
 
     public static final Route GET_ARTISTS_TOP_TRACKS = (request, response) -> {
         String id = request.params(":id");
-        if (!service.exists(id))
-            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Artist does not exist"));
+//        if (!service.exists(id))
+//            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Artist does not exist"));
         return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(id).topTracks())));
     };
 
     public static final Route GET_ARTISTS_TOP_TRACK = (request, response) -> {
         String id = request.params(":id");
-        if (!service.exists(id))
-            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Artist does not exist"));
+//        if (!service.exists(id))
+//            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Artist does not exist"));
         String trackId = request.params(":trackId");
         Artist artist = service.get(id);
         Track track = artist.topTracks().stream().filter(t -> t.id().equals(trackId)).findFirst().orElse(null);

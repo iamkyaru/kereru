@@ -17,8 +17,8 @@ public class TrackController {
 
     public static final Route GET_TRACK = (request, response) -> {
         String id = request.params(":id");
-        if (!service.exists(id))
-            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Track does not exist"));
+//        if (!service.exists(id))
+//            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Track does not exist"));
         return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCache().get(id))));
     };
 }

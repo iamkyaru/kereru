@@ -1,21 +1,22 @@
-package org.discordlist.spotifymicroservices;
+package org.discordlist.spotifymicroservice;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.Configurator;
-import org.discordlist.spotifymicroservices.cache.RedisSession;
-import org.discordlist.spotifymicroservices.config.Config;
-import org.discordlist.spotifymicroservices.controller.ArtistController;
-import org.discordlist.spotifymicroservices.controller.PlaylistController;
-import org.discordlist.spotifymicroservices.controller.TrackController;
-import org.discordlist.spotifymicroservices.requests.handler.TokenHandler;
-import org.discordlist.spotifymicroservices.services.impl.AlbumService;
-import org.discordlist.spotifymicroservices.services.impl.ArtistService;
-import org.discordlist.spotifymicroservices.services.impl.PlaylistService;
-import org.discordlist.spotifymicroservices.services.impl.TrackService;
+import org.discordlist.spotifymicroservice.cache.RedisSession;
+import org.discordlist.spotifymicroservice.config.Config;
+import org.discordlist.spotifymicroservice.controller.ArtistController;
+import org.discordlist.spotifymicroservice.controller.PlaylistController;
+import org.discordlist.spotifymicroservice.controller.TrackController;
+import org.discordlist.spotifymicroservice.requests.handler.TokenHandler;
+import org.discordlist.spotifymicroservice.services.impl.AlbumService;
+import org.discordlist.spotifymicroservice.services.impl.ArtistService;
+import org.discordlist.spotifymicroservice.services.impl.PlaylistService;
+import org.discordlist.spotifymicroservice.services.impl.TrackService;
 import org.simpleyaml.configuration.file.YamlFile;
 import org.simpleyaml.exceptions.InvalidConfigurationException;
 
@@ -29,6 +30,7 @@ import static spark.Spark.*;
 @Getter
 public class SpotifyMicroservice {
 
+    @Getter
     private static SpotifyMicroservice instance;
     private final YamlFile config;
     private final TokenHandler tokenHandler;
@@ -37,7 +39,7 @@ public class SpotifyMicroservice {
     private final TrackService trackService;
     private final ArtistService artistService;
     private final PlaylistService playlistService;
-    private final AlbumService albumService = null;
+    private final AlbumService albumService;
 
     private SpotifyMicroservice() throws IOException, InvalidConfigurationException {
         instance = this;
@@ -48,8 +50,7 @@ public class SpotifyMicroservice {
         this.trackService = new TrackService(redisSession);
         this.artistService = new ArtistService();
         this.playlistService = new PlaylistService(redisSession);
-//        this.albumService = new AlbumService();
-
+        this.albumService = new AlbumService();
 
         port(config.getInt(Config.SERVICE_PORT));
         ipAddress(config.getString(Config.SERVICE_BIND));
@@ -82,10 +83,6 @@ public class SpotifyMicroservice {
 //        get("/albums/:id", AlbumController.GET_ALBUM);
 //        get("/albums/:id/tracks", AlbumController.GET_ALBUM_TRACKS);
 //        get("/albums/:id/tracks/:trackId", AlbumController.GET_ALBUM_TRACK);
-    }
-
-    public static SpotifyMicroservice getInstance() {
-        return instance;
     }
 
     public static void main(String[] args) throws IOException, InvalidConfigurationException {

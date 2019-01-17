@@ -26,7 +26,7 @@ import java.util.List;
 public class TrackService extends AbstractRequest implements IService<Track> {
 
     @Getter
-    private Cache<Track> cache;
+    private final Cache<Track> cache;
 
     public TrackService(RedisSession redisSession) {
         super();
@@ -112,12 +112,13 @@ public class TrackService extends AbstractRequest implements IService<Track> {
                 .id(id)
                 .name(name)
                 .artists(artists)
-                .uri(uri)
                 .url(url)
                 .durationTimeMillis(duration)
                 .href(href)
+                .uri(uri)
                 .local(local)
-                .explicit(explicit).build();
+                .explicit(explicit)
+                .build();
     }
 
     /**

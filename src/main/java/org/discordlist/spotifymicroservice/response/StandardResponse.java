@@ -1,4 +1,4 @@
-package org.discordlist.spotifymicroservices.response;
+package org.discordlist.spotifymicroservice.response;
 
 import com.google.gson.JsonElement;
 import lombok.Getter;

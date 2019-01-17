@@ -1,4 +1,4 @@
-package org.discordlist.spotifymicroservices.cache;
+package org.discordlist.spotifymicroservice.cache;
 
 /**
  * Represents a object that can be cached.

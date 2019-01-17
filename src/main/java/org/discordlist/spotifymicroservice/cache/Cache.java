@@ -1,4 +1,4 @@
-package org.discordlist.spotifymicroservices.cache;
+package org.discordlist.spotifymicroservice.cache;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

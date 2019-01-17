@@ -1,10 +1,10 @@
-package org.discordlist.spotifymicroservices.entities;
+package org.discordlist.spotifymicroservice.entities;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.discordlist.spotifymicroservices.cache.Cacheable;
+import org.discordlist.spotifymicroservice.cache.Cacheable;
 
 import java.util.List;
 

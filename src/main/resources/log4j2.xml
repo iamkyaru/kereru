@@ -1,4 +1,4 @@
-<Configuration packages="org.discordlist.spotifymicroservices">
+<Configuration packages="org.discordlist.spotifymicroservice">
     <Properties>
         <property name="fileDate">${date:dd-MM-yyyy}</property>
     </Properties>

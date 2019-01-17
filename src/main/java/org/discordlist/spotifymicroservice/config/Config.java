@@ -1,4 +1,4 @@
-package org.discordlist.spotifymicroservices.config;
+package org.discordlist.spotifymicroservice.config;
 
 import lombok.extern.log4j.Log4j2;
 import org.simpleyaml.configuration.file.YamlFile;

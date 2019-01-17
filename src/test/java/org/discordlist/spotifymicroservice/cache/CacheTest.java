@@ -1,12 +1,9 @@
-package org.discordlist.spotifymicroservices.cache;
+package org.discordlist.spotifymicroservice.cache;
 
-import org.discordlist.spotifymicroservices.entities.Track;
+import org.discordlist.spotifymicroservice.entities.Track;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CacheTest {
 

@@ -1,8 +1,8 @@
-package org.discordlist.spotifymicroservices.services.impl;
+package org.discordlist.spotifymicroservice.services.impl;
 
-import org.discordlist.spotifymicroservices.entities.Album;
-import org.discordlist.spotifymicroservices.exceptions.AlbumException;
-import org.discordlist.spotifymicroservices.services.IService;
+import org.discordlist.spotifymicroservice.entities.Album;
+import org.discordlist.spotifymicroservice.exceptions.AlbumException;
+import org.discordlist.spotifymicroservice.services.IService;
 
 import java.util.Collection;
 import java.util.Map;

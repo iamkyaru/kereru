@@ -1,4 +1,4 @@
-package org.discordlist.spotifymicroservices.cache;
+package org.discordlist.spotifymicroservice.cache;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

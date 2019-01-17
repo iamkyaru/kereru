@@ -1,4 +1,4 @@
-package org.discordlist.spotifymicroservices.exceptions;
+package org.discordlist.spotifymicroservice.exceptions;
 
 public class AlbumException extends Exception {
 

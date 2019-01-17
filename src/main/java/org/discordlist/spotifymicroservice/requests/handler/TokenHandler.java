@@ -1,4 +1,4 @@
-package org.discordlist.spotifymicroservices.requests.handler;
+package org.discordlist.spotifymicroservice.requests.handler;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

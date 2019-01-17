@@ -9,13 +9,13 @@ import java.io.IOException;
 @Log4j2
 public class Config {
 
-    public static String SERVICE_PORT = "service.port";
-    public static String SERVICE_BIND = "service.bind";
-    public static String REDIS_HOST = "redis.host";
-    public static String REDIS_PORT = "redis.port";
-    public static String REDIS_PASSWORD = "redis.password";
-    public static String SPOTIFY_CLIENT_ID = "spotify.client.id";
-    public static String SPOTIFY_CLIENT_SECRET = "spotify.client.secret";
+    public static final String SERVICE_PORT = "service.port";
+    public static final String SERVICE_BIND = "service.bind";
+    public static final String REDIS_HOST = "redis.host";
+    public static final String REDIS_PORT = "redis.port";
+    public static final String REDIS_PASSWORD = "redis.password";
+    public static final String SPOTIFY_CLIENT_ID = "spotify.client.id";
+    public static final String SPOTIFY_CLIENT_SECRET = "spotify.client.secret";
 
     private final String configSrc;
     private YamlFile config;

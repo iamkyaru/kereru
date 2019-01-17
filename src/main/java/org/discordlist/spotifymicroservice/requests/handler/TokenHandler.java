@@ -11,8 +11,9 @@ import java.util.concurrent.TimeUnit;
 @Log4j2
 public class TokenHandler {
 
-    private OkHttpClient httpClient;
-    private String clientId, clientSecret;
+    private final OkHttpClient httpClient;
+    private final String clientId;
+    private final String clientSecret;
 
     private String accessToken;
     private long tokenExpireTime;

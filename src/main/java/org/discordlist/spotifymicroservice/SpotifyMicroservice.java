@@ -48,9 +48,9 @@ public class SpotifyMicroservice {
         this.redisSession = new RedisSession(config.getString(Config.REDIS_HOST), config.getInt(Config.REDIS_PORT), config.getString(Config.REDIS_PASSWORD));
 
         this.trackService = new TrackService(redisSession);
-        this.artistService = new ArtistService();
+        this.artistService = new ArtistService(redisSession);
         this.playlistService = new PlaylistService(redisSession);
-        this.albumService = new AlbumService();
+        this.albumService = new AlbumService(redisSession);
 
         port(config.getInt(Config.SERVICE_PORT));
         ipAddress(config.getString(Config.SERVICE_BIND));

@@ -1,24 +1,31 @@
-package org.discordlist.spotifymicroservices.services.impl;
+package org.discordlist.spotifymicroservice.services.impl;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.discordlist.spotifymicroservices.cache.Cache;
-import org.discordlist.spotifymicroservices.cache.RedisSession;
-import org.discordlist.spotifymicroservices.entities.Artist;
-import org.discordlist.spotifymicroservices.entities.Track;
-import org.discordlist.spotifymicroservices.requests.AbstractRequest;
-import org.discordlist.spotifymicroservices.services.IService;
+import org.discordlist.spotifymicroservice.cache.Cache;
+import org.discordlist.spotifymicroservice.cache.RedisSession;
+import org.discordlist.spotifymicroservice.entities.Artist;
+import org.discordlist.spotifymicroservice.entities.Track;
+import org.discordlist.spotifymicroservice.requests.AbstractRequest;
+import org.discordlist.spotifymicroservice.services.IService;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The Service, which has all the methods to retrieve tracks.
  */
+@Log4j2
 public class TrackService extends AbstractRequest implements IService<Track> {
 
+    @Getter
     private Cache<Track> cache;
 
     public TrackService(RedisSession redisSession) {
@@ -70,7 +77,7 @@ public class TrackService extends AbstractRequest implements IService<Track> {
                     return makeTrack(jsonObject);
                 }
             } catch (IOException e) {
-//                logger.error("Could not fetch Track", e);
+                log.error("Could not fetch Track", e);
             }
         }
         return null;
@@ -102,15 +109,15 @@ public class TrackService extends AbstractRequest implements IService<Track> {
         boolean local = jsonObject.get("is_local").getAsBoolean();
         boolean explicit = jsonObject.get("explicit").getAsBoolean();
         return Track.builder()
-        .id(id)
-        .name(name)
-        .artists(artists)
-        .uri(uri)
-        .url(url)
-        .durationTimeMillis(duration)
-        .href(href)
-        .local(local)
-        .explicit(explicit).build();
+                .id(id)
+                .name(name)
+                .artists(artists)
+                .uri(uri)
+                .url(url)
+                .durationTimeMillis(duration)
+                .href(href)
+                .local(local)
+                .explicit(explicit).build();
     }
 
     /**
@@ -142,9 +149,5 @@ public class TrackService extends AbstractRequest implements IService<Track> {
         if (id != null)
             return this.cache.exist(id);
         return false;
-    }
-
-    public Cache<Track> getCache() {
-        return this.cache;
     }
 }

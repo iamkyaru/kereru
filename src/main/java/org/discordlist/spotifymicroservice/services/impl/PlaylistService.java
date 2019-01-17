@@ -1,32 +1,34 @@
-package org.discordlist.spotifymicroservices.services.impl;
+package org.discordlist.spotifymicroservice.services.impl;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
-import org.discordlist.spotifymicroservices.SpotifyMicroservice;
-import org.discordlist.spotifymicroservices.cache.Cache;
-import org.discordlist.spotifymicroservices.cache.RedisSession;
-import org.discordlist.spotifymicroservices.entities.Playlist;
-import org.discordlist.spotifymicroservices.entities.Track;
-import org.discordlist.spotifymicroservices.requests.AbstractRequest;
-import org.discordlist.spotifymicroservices.services.IService;
+import org.discordlist.spotifymicroservice.SpotifyMicroservice;
+import org.discordlist.spotifymicroservice.cache.Cache;
+import org.discordlist.spotifymicroservice.cache.RedisSession;
+import org.discordlist.spotifymicroservice.entities.Playlist;
+import org.discordlist.spotifymicroservice.entities.Track;
+import org.discordlist.spotifymicroservice.requests.AbstractRequest;
+import org.discordlist.spotifymicroservice.services.IService;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.SimpleFormatter;
+import java.util.Objects;
 
+@Log4j2
 public class PlaylistService extends AbstractRequest implements IService<Playlist> {
 
+    @Getter
     private final Cache<Playlist> cache;
 
     public PlaylistService(RedisSession redisSession) {
@@ -38,16 +40,6 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
                 return PlaylistService.this.get(id);
             }
         };
-
-        try {
-            FileHandler fileHandler = new FileHandler("output.log");
-            logger.addHandler(fileHandler);
-            logger.setUseParentHandlers(false);
-            fileHandler.setFormatter(new SimpleFormatter());
-            logger.info("Start");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -73,7 +65,7 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
                     return makePlaylist(jsonObject);
                 }
             } catch (IOException e) {
-//                logger.error("Could not fetch Playlist", e);
+                log.error("Could not fetch Playlist", e);
             }
         }
         return null;
@@ -112,7 +104,7 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
                     offset = getParamValue(nextPageUrl, "offset");
                     limit = getParamValue(nextPageUrl, "limit");
                 } catch (URISyntaxException e) {
-                    e.printStackTrace();
+                    log.error("Unable to get parameter values from url", e);
                 }
             }
 
@@ -125,12 +117,11 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
             try (Response response = httpClient.newCall(builder.build()).execute()) {
                 if (response.body() != null) {
                     jsonPage = new JsonParser().parse(response.body().string()).getAsJsonObject();
-                    logger.info(String.valueOf(jsonPage));
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Could not request for playlist tracks", e);
             }
-        } while (jsonPage.has("next") && jsonPage.get("next") != null);
+        } while (Objects.requireNonNull(jsonPage).has("next") && jsonPage.get("next") != null);
         JsonArray jsonArray = jsonPage.getAsJsonArray("items");
         jsonArray.forEach(jsonElement -> {
             JsonObject jsonObject = jsonElement.getAsJsonObject().get("track").getAsJsonObject();
@@ -164,9 +155,5 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
         if (id != null)
             return this.cache.exist(id);
         return false;
-    }
-
-    public Cache<Playlist> getCache() {
-        return this.cache;
     }
 }

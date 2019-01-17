@@ -1,20 +1,22 @@
-package org.discordlist.spotifymicroservices.services.impl;
+package org.discordlist.spotifymicroservice.services.impl;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.extern.log4j.Log4j2;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.discordlist.spotifymicroservices.SpotifyMicroservice;
-import org.discordlist.spotifymicroservices.entities.Artist;
-import org.discordlist.spotifymicroservices.entities.Track;
-import org.discordlist.spotifymicroservices.requests.AbstractRequest;
-import org.discordlist.spotifymicroservices.services.IService;
+import org.discordlist.spotifymicroservice.SpotifyMicroservice;
+import org.discordlist.spotifymicroservice.entities.Artist;
+import org.discordlist.spotifymicroservice.entities.Track;
+import org.discordlist.spotifymicroservice.requests.AbstractRequest;
+import org.discordlist.spotifymicroservice.services.IService;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Log4j2
 public class ArtistService extends AbstractRequest implements IService<Artist> {
 
     private final Map<String, Artist> artistMap;
@@ -64,7 +66,7 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
                     return makeArtist(jsonObject);
                 }
             } catch (IOException e) {
-//                logger.error("Could not fetch Artist", e);
+                log.error("Could not fetch Artist", e);
             }
         }
         return null;
@@ -114,7 +116,7 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
                 });
             }
         } catch (IOException e) {
-//            logger.error(String.format("Failed to fetch top-tracks from artist with id: %s", artistId), e);
+            log.error(String.format("Failed to fetch top-tracks from artist with id: %s", artistId), e);
         }
         return tracks;
     }

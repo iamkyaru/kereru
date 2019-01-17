@@ -16,7 +16,7 @@ public class Album implements Cacheable {
 
     private final String id;
     private String name;
-    private List<String> artists;
+    private List<Artist> artists;
     private String url;
     private String href;
     private String uri;

@@ -94,7 +94,6 @@ public class AlbumService extends AbstractRequest implements IService<Album> {
                     .url(url)
                     .href(href)
                     .uri(uri)
-                    .topTracks(Collections.emptyList())
                     .build());
         });
         String href = jsonObject.get("href").getAsString();
@@ -118,7 +117,7 @@ public class AlbumService extends AbstractRequest implements IService<Album> {
         JsonObject jsonPage = null;
         do {
             String offset = "0";
-            String limit = "100";
+            String limit = "50";
 
             if (jsonPage != null) {
                 if (!jsonPage.has("next") || jsonPage.get("next").isJsonNull()) break;
@@ -146,9 +145,10 @@ public class AlbumService extends AbstractRequest implements IService<Album> {
                 log.error("Could not request for album tracks", e);
             }
         } while (Objects.requireNonNull(jsonPage).has("next") && jsonPage.get("next") != null);
+        System.out.println(jsonPage.toString());
         JsonArray jsonArray = jsonPage.getAsJsonArray("items");
         jsonArray.forEach(jsonElement -> {
-            JsonObject jsonObject = jsonElement.getAsJsonObject().get("track").getAsJsonObject();
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
             Track track = SpotifyMicroservice.instance().trackService().makeTrack(jsonObject);
             tracks.add(track);
         });

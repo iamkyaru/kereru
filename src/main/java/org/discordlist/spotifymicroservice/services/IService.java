@@ -1,4 +1,4 @@
-package org.discordlist.spotifymicroservices.services;
+package org.discordlist.spotifymicroservice.services;
 
 import java.util.Collection;
 

@@ -3,38 +3,49 @@ package org.discordlist.spotifymicroservice.services.impl;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.Getter;
+import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.discordlist.spotifymicroservice.SpotifyMicroservice;
+import org.discordlist.spotifymicroservice.cache.Cache;
+import org.discordlist.spotifymicroservice.cache.RedisSession;
 import org.discordlist.spotifymicroservice.entities.Artist;
 import org.discordlist.spotifymicroservice.entities.Track;
 import org.discordlist.spotifymicroservice.requests.AbstractRequest;
 import org.discordlist.spotifymicroservice.services.IService;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Log4j2
 public class ArtistService extends AbstractRequest implements IService<Artist> {
 
-    private final Map<String, Artist> artistMap;
+    @Getter
+    private final Cache<Artist> cache;
 
-    public ArtistService() {
+    public ArtistService(RedisSession redisSession) {
         super();
-        this.artistMap = new ConcurrentHashMap<>();
+        this.cache = new Cache<Artist>(Artist.class, "spotify.artists", redisSession) {
+            @Override
+            public Artist fetch(@NonNull String id) {
+                return ArtistService.this.get(id);
+            }
+        };
     }
 
     /**
-     * Adds an {@link Artist} to the in-memory cache.
+     * Adds an {@link Artist} to the redis cache.
      *
-     * @param artist the track which should be added.
+     * @param artist the {@link Track} which should be added.
      */
     @Override
     public void add(Artist artist) {
-        //if (artist != null)
-        //this.artistMap.put(artist.getId(), artist);
+        if (artist != null)
+            this.cache.update(artist);
     }
 
     /**
@@ -44,14 +55,14 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
      */
     @Override
     public Collection<Artist> getCachedValues() {
-        return this.artistMap.values();
+        return this.cache.all();
     }
 
     /**
      * Returns the wanted {@link Artist}, which can be received from the given id parameter.
      *
      * @param id the {@link Artist} id
-     * @return the {@link Artist} which should be returned from the given id or null if the id is not from an actual Track.
+     * @return the {@link Artist} which should be returned from the given id or null if the id is not from an actual {@link Track}.
      */
     @Override
     public Artist get(String id) {
@@ -95,7 +106,7 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
     }
 
     /**
-     * Returns a {@link List<Track>} of the most popular songs.
+     * Returns a {@link List<Track>} of the most popular songs from the {@link Artist}.
      *
      * @param artistId the {@link Artist} id which is needed for the retrieving of the top tracks.
      * @return a {@link List<Track>} of tracks
@@ -111,7 +122,7 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
                 JsonArray jsonArray = rootObject.getAsJsonArray("tracks");
                 jsonArray.forEach(jsonElement -> {
                     JsonObject jsonObject = jsonElement.getAsJsonObject();
-                    Track track = SpotifyMicroservice.getInstance().trackService().makeTrack(jsonObject);
+                    Track track = SpotifyMicroservice.instance().trackService().makeTrack(jsonObject);
                     tracks.add(track);
                 });
             }
@@ -132,16 +143,16 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
     /**
      * Deletes the given {@link Artist} id from the cache.
      *
-     * @param id the {@link Artist} id, which is wanted to be deleted from the in-memory cache.
+     * @param id the {@link Artist} id, which is wanted to be deleted from the redis cache.
      */
     @Override
     public void delete(String id) {
         if (id != null)
-            this.artistMap.remove(id);
+            this.cache.delete(id);
     }
 
     /**
-     * Returns the existence of an Artist from the given {@link Artist} id.
+     * Returns a boolean, if the {@link Artist} exists or not.
      *
      * @param id the {@link Artist} id
      * @return true, if the id is saved in the {@link java.util.concurrent.ConcurrentMap}, otherwise false.
@@ -149,7 +160,7 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
     @Override
     public boolean exists(String id) {
         if (id != null)
-            return this.artistMap.containsKey(id);
+            return this.cache.exist(id);
         return false;
     }
 }

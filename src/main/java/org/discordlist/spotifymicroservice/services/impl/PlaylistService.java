@@ -86,7 +86,8 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
                 .href(href)
                 .uri(uri)
                 .tracks(tracks)
-                .url(url).build();
+                .url(url)
+                .build();
     }
 
     private List<Track> getTracks(String playlistId) {
@@ -108,7 +109,7 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
                 }
             }
 
-            HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder()
+            HttpUrl.Builder httpBuilder = Objects.requireNonNull(HttpUrl.parse(url)).newBuilder()
                     .addQueryParameter("offset", offset)
                     .addQueryParameter("limit", limit);
             Request.Builder builder = new Request.Builder()
@@ -125,19 +126,10 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
         JsonArray jsonArray = jsonPage.getAsJsonArray("items");
         jsonArray.forEach(jsonElement -> {
             JsonObject jsonObject = jsonElement.getAsJsonObject().get("track").getAsJsonObject();
-            Track track = SpotifyMicroservice.getInstance().trackService().makeTrack(jsonObject);
+            Track track = SpotifyMicroservice.instance().trackService().makeTrack(jsonObject);
             tracks.add(track);
         });
         return tracks;
-    }
-
-    private String getParamValue(String url, String parameter) throws URISyntaxException {
-        List<NameValuePair> queryParams = new URIBuilder(url).getQueryParams();
-        return queryParams.stream()
-                .filter(param -> param.getName().equalsIgnoreCase(parameter))
-                .map(NameValuePair::getValue)
-                .findFirst()
-                .orElse("");
     }
 
     @Override

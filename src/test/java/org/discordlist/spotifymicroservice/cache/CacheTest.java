@@ -7,12 +7,11 @@ import org.junit.jupiter.api.Test;
 
 class CacheTest {
 
-    private static RedisSession redisSession;
     private static Cache<Track> trackCache;
 
     @BeforeAll
     static void setUp() {
-        redisSession = new RedisSession("localhost", 6379);
+        RedisSession redisSession = new RedisSession("localhost", 6379);
         trackCache = new Cache<Track>(Track.class, "spotify.tracks", redisSession) {
             @Override
             public Track fetch(String id) {

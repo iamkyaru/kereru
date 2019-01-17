@@ -1,6 +1,5 @@
 package org.discordlist.spotifymicroservice;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.extern.log4j.Log4j2;
@@ -9,6 +8,7 @@ import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.discordlist.spotifymicroservice.cache.RedisSession;
 import org.discordlist.spotifymicroservice.config.Config;
+import org.discordlist.spotifymicroservice.controller.AlbumController;
 import org.discordlist.spotifymicroservice.controller.ArtistController;
 import org.discordlist.spotifymicroservice.controller.PlaylistController;
 import org.discordlist.spotifymicroservice.controller.TrackController;
@@ -76,13 +76,12 @@ public class SpotifyMicroservice {
             get("/playlists/:id", PlaylistController.GET_PLAYLIST);
             get("/playlists/:id/tracks", PlaylistController.GET_PLAYLIST_TRACKS);
             get("/playlists/:id/tracks/:trackId", PlaylistController.GET_PLAYLIST_TRACK);
+            /* Albums */
+            get("/albums", AlbumController.GET_ALBUMS);
+            get("/albums/:id", AlbumController.GET_ALBUM);
+            get("/albums/:id/tracks", AlbumController.GET_ALBUM_TRACKS);
+            get("/albums/:id/tracks/:trackId", AlbumController.GET_ALBUM_TRACK);
         });
-
-//        /* Albums */
-//        get("/albums", AlbumController.GET_ALBUMS);
-//        get("/albums/:id", AlbumController.GET_ALBUM);
-//        get("/albums/:id/tracks", AlbumController.GET_ALBUM_TRACKS);
-//        get("/albums/:id/tracks/:trackId", AlbumController.GET_ALBUM_TRACK);
     }
 
     public static void main(String[] args) throws IOException, InvalidConfigurationException {

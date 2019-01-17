@@ -85,7 +85,7 @@ public class SpotifyMicroservice {
     }
 
     public static void main(String[] args) throws IOException, InvalidConfigurationException {
-        Configurator.setRootLevel(Level.toLevel(args[0], Level.INFO));
+        Configurator.setRootLevel(Level.toLevel(args.length == 0 ? "" : args[0], Level.INFO));
         Configurator.initialize(ClassLoader.getSystemClassLoader(), new ConfigurationSource(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("log4j2.xml"))));
         new SpotifyMicroservice();
     }

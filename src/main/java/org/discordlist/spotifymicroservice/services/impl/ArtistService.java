@@ -38,17 +38,6 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
     }
 
     /**
-     * Adds an {@link Artist} to the redis cache.
-     *
-     * @param artist the {@link Track} which should be added.
-     */
-    @Override
-    public void add(Artist artist) {
-        if (artist != null)
-            this.cache.update(artist);
-    }
-
-    /**
      * Returns a {@link Collection<Artist>} of all cached {@link Artist} values.
      *
      * @return all cached values.
@@ -130,37 +119,5 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
             log.error(String.format("Failed to fetch top-tracks from artist with id: %s", artistId), e);
         }
         return tracks;
-    }
-
-    /**
-     * Not supported.
-     */
-    @Override
-    public Artist edit(Artist artist) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * Deletes the given {@link Artist} id from the cache.
-     *
-     * @param id the {@link Artist} id, which is wanted to be deleted from the redis cache.
-     */
-    @Override
-    public void delete(String id) {
-        if (id != null)
-            this.cache.delete(id);
-    }
-
-    /**
-     * Returns a boolean, if the {@link Artist} exists or not.
-     *
-     * @param id the {@link Artist} id
-     * @return true, if the id is saved in the {@link java.util.concurrent.ConcurrentMap}, otherwise false.
-     */
-    @Override
-    public boolean exists(String id) {
-        if (id != null)
-            return this.cache.exist(id);
-        return false;
     }
 }

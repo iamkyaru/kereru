@@ -41,11 +41,6 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
     }
 
     @Override
-    public void add(Playlist playlist) {
-        this.cache.update(playlist);
-    }
-
-    @Override
     public Collection<Playlist> getCachedValues() {
         return this.cache.all();
     }
@@ -128,22 +123,5 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
             });
         } while (jsonPage.has("next") && jsonPage.get("next") != null);
         return tracks;
-    }
-
-    @Override
-    public Playlist edit(Playlist playlist) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void delete(String id) {
-        this.cache.delete(id);
-    }
-
-    @Override
-    public boolean exists(String id) {
-        if (id != null)
-            return this.cache.exist(id);
-        return false;
     }
 }

@@ -38,17 +38,6 @@ public class AlbumService extends AbstractRequest implements IService<Album> {
     }
 
     /**
-     * Add an Album to the in-memory cache.
-     *
-     * @param album the album which should be added.
-     */
-    @Override
-    public void add(Album album) {
-        if (album != null)
-            this.cache.update(album);
-    }
-
-    /**
      * Get all cached values.
      *
      * @return all cached values.
@@ -153,23 +142,5 @@ public class AlbumService extends AbstractRequest implements IService<Album> {
             tracks.add(track);
         });
         return tracks;
-    }
-
-    @Override
-    public Album edit(Album album) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void delete(String id) {
-        if (id != null)
-            this.cache.delete(id);
-    }
-
-    @Override
-    public boolean exists(String id) {
-        if (id != null)
-            return this.cache.exist(id);
-        return false;
     }
 }

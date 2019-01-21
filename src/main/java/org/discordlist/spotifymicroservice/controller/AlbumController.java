@@ -21,22 +21,16 @@ public class AlbumController {
 
     public static final Route GET_ALBUM = (request, response) -> {
         String id = request.params(":id");
-//        if (!service.exists(id))
-//            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Album does not exist"));
         return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(id))));
     };
 
     public static final Route GET_ALBUM_TRACKS = (request, response) -> {
         String id = request.params(":id");
-//        if (!service.exists(id))
-//            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Album does not exist"));
         return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(id).tracks())));
     };
 
     public static final Route GET_ALBUM_TRACK = (request, response) -> {
         String id = request.params(":id");
-//        if (!service.exists(id))
-//            return GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Album does not exist"));
         String trackId = request.params(":trackId");
         Album album = service.get(id);
         Track track = album.tracks().stream().filter(t -> t.id().equals(trackId)).findFirst().orElse(null);

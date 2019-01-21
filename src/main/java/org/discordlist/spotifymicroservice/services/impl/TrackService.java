@@ -39,16 +39,6 @@ public class TrackService extends AbstractRequest implements IService<Track> {
     }
 
     /**
-     * Add an {@link Track} to the cache.
-     *
-     * @param track the track which should be added.
-     */
-    @Override
-    public void add(Track track) {
-        this.cache.update(track);
-    }
-
-    /**
      * Get all cached values.
      *
      * @return all cached values.
@@ -119,36 +109,5 @@ public class TrackService extends AbstractRequest implements IService<Track> {
                 .local(local)
                 .explicit(explicit)
                 .build();
-    }
-
-    /**
-     * Not supported.
-     */
-    @Override
-    public Track edit(Track track) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * Deletes the given {@link Track} id from the cache.
-     *
-     * @param id the {@link Track} id, which is wanted to be deleted from the cache.
-     */
-    @Override
-    public void delete(String id) {
-        this.cache.delete(id);
-    }
-
-    /**
-     * Returns the existence of an {@link Track} from the given {@link Track} id.
-     *
-     * @param id the {@link Track} id
-     * @return true, if the id is saved in the {@link Cache<Track>}, otherwise false.
-     */
-    @Override
-    public boolean exists(String id) {
-        if (id != null)
-            return this.cache.exist(id);
-        return false;
     }
 }

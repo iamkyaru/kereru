@@ -4,15 +4,23 @@ import java.util.Collection;
 
 public interface IService<T> {
 
-    void add(T t);
+    default void add(T t) {
+        throw new UnsupportedOperationException("Not supported.");
+    }
 
     Collection<T> getCachedValues();
 
     T get(String id);
 
-    T edit(T t) throws Exception;
+    default T edit(T t) {
+        throw new UnsupportedOperationException("Not supported.");
+    }
 
-    void delete(String id);
+    default void delete(String id) {
+        throw new UnsupportedOperationException("Not supported.");
+    }
 
-    boolean exists(String id);
+    default boolean exists(String id) {
+        throw new UnsupportedOperationException("Not supported.");
+    }
 }

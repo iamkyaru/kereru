@@ -120,13 +120,13 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
             } catch (IOException e) {
                 log.error("Could not request for playlist tracks", e);
             }
-        } while (Objects.requireNonNull(jsonPage).has("next") && jsonPage.get("next") != null);
-        JsonArray jsonArray = jsonPage.getAsJsonArray("items");
-        jsonArray.forEach(jsonElement -> {
-            JsonObject jsonObject = jsonElement.getAsJsonObject().get("track").getAsJsonObject();
-            Track track = SpotifyMicroservice.instance().trackService().makeTrack(jsonObject);
-            tracks.add(track);
-        });
+            JsonArray jsonArray = Objects.requireNonNull(jsonPage).getAsJsonArray("items");
+            jsonArray.forEach(jsonElement -> {
+                JsonObject jsonObject = jsonElement.getAsJsonObject().get("track").getAsJsonObject();
+                Track track = SpotifyMicroservice.instance().trackService().makeTrack(jsonObject);
+                tracks.add(track);
+            });
+        } while (jsonPage.has("next") && jsonPage.get("next") != null);
         return tracks;
     }
 

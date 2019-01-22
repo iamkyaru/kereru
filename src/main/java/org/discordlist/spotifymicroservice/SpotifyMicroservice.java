@@ -102,33 +102,7 @@ public class SpotifyMicroservice {
             });
         });
 
-//        get("/", (request, response) -> {
-//            response.status(404);
-//            response.type("application/text");
-//            return "This endpoint is not available.";
-//        });
-//
-//        path("/", () -> before("v1/*", (request, response) -> response.type("application/json")));
-//        path("/v1", () -> {
-//            /* Tracks */
-//            get("/tracks", TrackController.GET_CACHED_TRACKS);
-//            get("/tracks/:id", TrackController.GET_TRACK);
-//            /* Artists */
-//            get("/artists", ArtistController.GET_ARTISTS);
-//            get("/artists/:id", ArtistController.GET_ARTIST);
-//            get("/artists/:id/top-tracks", ArtistController.GET_ARTISTS_TOP_TRACKS);
-//            get("/artists/:id/top-tracks/:trackId", ArtistController.GET_ARTISTS_TOP_TRACK);
-//            /* Playlists */
-//            get("/playlists", PlaylistController.GET_PLAYLISTS);
-//            get("/playlists/:id", PlaylistController.GET_PLAYLIST);
-//            get("/playlists/:id/tracks", PlaylistController.GET_PLAYLIST_TRACKS);
-//            get("/playlists/:id/tracks/:trackId", PlaylistController.GET_PLAYLIST_TRACK);
-//            /* Albums */
-//            get("/albums", AlbumController.GET_ALBUMS);
-//            get("/albums/:id", AlbumController.GET_ALBUM);
-//            get("/albums/:id/tracks", AlbumController.GET_ALBUM_TRACKS);
-//            get("/albums/:id/tracks/:trackId", AlbumController.GET_ALBUM_TRACK);
-//        });
+        Runtime.getRuntime().addShutdownHook(new Thread(app::stop));
     }
 
     public static void main(String[] args) throws IOException, InvalidConfigurationException {

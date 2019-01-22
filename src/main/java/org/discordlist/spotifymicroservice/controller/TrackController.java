@@ -12,8 +12,8 @@ public class TrackController {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final TrackService service = SpotifyMicroservice.instance().trackService();
 
-    public static final Handler GET_TRACK = context -> {
-        String trackId = context.queryParam(":trackId");
-        context.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCache().get(trackId))));
+    public static final Handler GET_TRACK = ctx -> {
+        String trackId = ctx.queryParam(":trackId");
+        ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCache().get(trackId))));
     };
 }

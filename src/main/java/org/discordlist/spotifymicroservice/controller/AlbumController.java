@@ -16,26 +16,26 @@ public class AlbumController {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final IService<Album> service = SpotifyMicroservice.instance().albumService();
 
-    public static final Handler GET_ALBUMS = context
+    public static final Handler GET_ALBUMS = ctx
             -> GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCachedValues())));
 
-    public static final Handler GET_ALBUM = context -> {
-        String albumId = context.queryParam(":albumId");
-        context.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(albumId))));
+    public static final Handler GET_ALBUM = ctx -> {
+        String albumId = ctx.queryParam(":albumId");
+        ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(albumId))));
     };
 
-    public static final Handler GET_ALBUM_TRACKS = context -> {
-        String albumId = context.queryParam(":albumId");
-        context.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(albumId).tracks())));
+    public static final Handler GET_ALBUM_TRACKS = ctx -> {
+        String albumId = ctx.queryParam(":albumId");
+        ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(albumId).tracks())));
     };
 
-    public static final Handler GET_ALBUM_TRACK = context -> {
-        String albumId = context.queryParam(":albumId");
-        String trackId = context.queryParam(":trackId");
+    public static final Handler GET_ALBUM_TRACK = ctx -> {
+        String albumId = ctx.queryParam(":albumId");
+        String trackId = ctx.queryParam(":trackId");
         Album album = service.get(albumId);
         Track track = album.tracks().stream().filter(t -> t.id().equals(trackId)).findFirst().orElse(null);
         if (track == null || album.tracks().stream().noneMatch(t -> t.id().equals(trackId)))
-            context.json(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Track does not exist"));
-        context.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(track)));
+            ctx.json(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Track does not exist"));
+        ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(track)));
     };
 }

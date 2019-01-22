@@ -14,26 +14,26 @@ public class PlaylistController {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final PlaylistService service = SpotifyMicroservice.instance().playlistService();
 
-    public static final Handler GET_PLAYLISTS = context
-            -> context.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCachedValues())));
+    public static final Handler GET_PLAYLISTS = ctx
+            -> ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCachedValues())));
 
-    public static final Handler GET_PLAYLIST = context -> {
-        String playlistId = context.queryParam(":playlistId");
-        context.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCache().get(playlistId))));
+    public static final Handler GET_PLAYLIST = ctx -> {
+        String playlistId = ctx.queryParam(":playlistId");
+        ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCache().get(playlistId))));
     };
 
-    public static final Handler GET_PLAYLIST_TRACKS = context -> {
-        String playlistId = context.queryParam(":playlistId");
-        context.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCache().get(playlistId).tracks())));
+    public static final Handler GET_PLAYLIST_TRACKS = ctx -> {
+        String playlistId = ctx.queryParam(":playlistId");
+        ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCache().get(playlistId).tracks())));
     };
 
-    public static final Handler GET_PLAYLIST_TRACK = context -> {
-        String playlistId = context.queryParam(":playlistId");
-        String trackId = context.queryParam(":trackId");
+    public static final Handler GET_PLAYLIST_TRACK = ctx -> {
+        String playlistId = ctx.queryParam(":playlistId");
+        String trackId = ctx.queryParam(":trackId");
         Playlist playlist = service.getCache().get(playlistId);
         Track track = playlist.tracks().stream().filter(t -> t.id().equals(trackId)).findFirst().orElse(null);
         if (track == null || playlist.tracks().stream().noneMatch(t -> t.id().equals(trackId)))
-            context.json(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Track does not exist"));
-        context.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(track)));
+            ctx.json(new StandardResponse(StandardResponse.StatusResponse.ERROR, "Track does not exist"));
+        ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(track)));
     };
 }

@@ -9,6 +9,10 @@ import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.discordlist.spotifymicroservice.cache.RedisSession;
 import org.discordlist.spotifymicroservice.config.Config;
+import org.discordlist.spotifymicroservice.controller.AlbumController;
+import org.discordlist.spotifymicroservice.controller.ArtistController;
+import org.discordlist.spotifymicroservice.controller.PlaylistController;
+import org.discordlist.spotifymicroservice.controller.TrackController;
 import org.discordlist.spotifymicroservice.requests.handler.TokenHandler;
 import org.discordlist.spotifymicroservice.services.impl.AlbumService;
 import org.discordlist.spotifymicroservice.services.impl.ArtistService;
@@ -58,45 +62,31 @@ public class SpotifyMicroservice {
             get("/", ctx -> ctx.status(405).result("Not available."));
             path("v1", () -> {
                 path("tracks", () -> {
-                    get("/", ctx -> {
-                    });
-                    get("/:trackId", ctx -> {
-                    });
+                    get("/", TrackController.GET_TRACKS);
+                    get("/:trackId", TrackController.GET_TRACK);
                 });
                 path("artists", () -> {
-                    get("/", ctx -> {
-                    });
+                    get("/", ArtistController.GET_ARTISTS);
                     path("/:artistId", () -> {
-                        get("/", ctx -> {
-                        });
-                        get("/top-tracks", ctx -> {
-                        });
-                        get("/top-tracks/:trackId", ctx -> {
-                        });
+                        get("/", ArtistController.GET_ARTIST);
+                        get("/top-tracks", ArtistController.GET_ARTISTS_TOP_TRACKS);
+                        get("/top-tracks/:trackId", ArtistController.GET_ARTISTS_TOP_TRACKS);
                     });
                 });
                 path("playlists", () -> {
-                    get("/", ctx -> {
-                    });
+                    get("/", PlaylistController.GET_PLAYLISTS);
                     path("/:playlistId", () -> {
-                        get("/", ctx -> {
-                        });
-                        get("/tracks", ctx -> {
-                        });
-                        get("/tracks/:trackId", ctx -> {
-                        });
+                        get("/", PlaylistController.GET_PLAYLIST);
+                        get("/tracks", PlaylistController.GET_PLAYLIST_TRACKS);
+                        get("/tracks/:trackId", PlaylistController.GET_PLAYLIST_TRACK);
                     });
                 });
                 path("albums", () -> {
-                    get("/", ctx -> {
-                    });
+                    get("/", AlbumController.GET_ALBUMS);
                     path("/:albumId", () -> {
-                        get("/", ctx -> {
-                        });
-                        get("/tracks", ctx -> {
-                        });
-                        get("/tracks/:trackId", ctx -> {
-                        });
+                        get("/", AlbumController.GET_ALBUM);
+                        get("/tracks", AlbumController.GET_ALBUM_TRACKS);
+                        get("/tracks/:trackId", AlbumController.GET_ALBUM_TRACK);
                     });
                 });
             });

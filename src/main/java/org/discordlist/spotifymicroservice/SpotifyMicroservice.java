@@ -1,5 +1,6 @@
 package org.discordlist.spotifymicroservice;
 
+import io.javalin.Javalin;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.extern.log4j.Log4j2;
@@ -23,7 +24,8 @@ import org.simpleyaml.exceptions.InvalidConfigurationException;
 import java.io.IOException;
 import java.util.Objects;
 
-import static spark.Spark.*;
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.path;
 
 @Log4j2
 @Accessors(fluent = true)
@@ -52,36 +54,45 @@ public class SpotifyMicroservice {
         this.playlistService = new PlaylistService(redisSession);
         this.albumService = new AlbumService(redisSession);
 
-        port(config.getInt(Config.SERVICE_PORT));
-        ipAddress(config.getString(Config.SERVICE_BIND));
-        threadPool(16, 2, 30000);
-        get("/", (request, response) -> {
-            response.status(404);
-            response.type("application/text");
-            return "This endpoint is not available.";
+        Javalin app = Javalin.create()
+                .port(config.getInt(Config.SERVICE_PORT))
+                .defaultContentType("application/json")
+                .start();
+        app.routes(() -> {
+            get("/", ctx -> ctx.status(405).result("Not available."));
+            path("v1", () -> {
+                path("tracks", () -> {
+                    get("/", TrackController.GET_TRACKS);
+                    get("/:trackId", TrackController.GET_TRACK);
+                });
+                path("artists", () -> {
+                    get("/", ArtistController.GET_ARTISTS);
+                    path("/:artistId", () -> {
+                        get("/", ArtistController.GET_ARTIST);
+                        get("/top-tracks", ArtistController.GET_ARTISTS_TOP_TRACKS);
+                        get("/top-tracks/:trackId", ArtistController.GET_ARTISTS_TOP_TRACKS);
+                    });
+                });
+                path("playlists", () -> {
+                    get("/", PlaylistController.GET_PLAYLISTS);
+                    path("/:playlistId", () -> {
+                        get("/", PlaylistController.GET_PLAYLIST);
+                        get("/tracks", PlaylistController.GET_PLAYLIST_TRACKS);
+                        get("/tracks/:trackId", PlaylistController.GET_PLAYLIST_TRACK);
+                    });
+                });
+                path("albums", () -> {
+                    get("/", AlbumController.GET_ALBUMS);
+                    path("/:albumId", () -> {
+                        get("/", AlbumController.GET_ALBUM);
+                        get("/tracks", AlbumController.GET_ALBUM_TRACKS);
+                        get("/tracks/:trackId", AlbumController.GET_ALBUM_TRACK);
+                    });
+                });
+            });
         });
 
-        path("/", () -> before("v1/*", (request, response) -> response.type("application/json")));
-        path("/v1", () -> {
-            /* Tracks */
-            get("/tracks", TrackController.GET_CACHED_TRACKS);
-            get("/tracks/:id", TrackController.GET_TRACK);
-            /* Artists */
-            get("/artists", ArtistController.GET_ARTISTS);
-            get("/artists/:id", ArtistController.GET_ARTIST);
-            get("/artists/:id/top-tracks", ArtistController.GET_ARTISTS_TOP_TRACKS);
-            get("/artists/:id/top-tracks/:trackId", ArtistController.GET_ARTISTS_TOP_TRACK);
-            /* Playlists */
-            get("/playlists", PlaylistController.GET_PLAYLISTS);
-            get("/playlists/:id", PlaylistController.GET_PLAYLIST);
-            get("/playlists/:id/tracks", PlaylistController.GET_PLAYLIST_TRACKS);
-            get("/playlists/:id/tracks/:trackId", PlaylistController.GET_PLAYLIST_TRACK);
-            /* Albums */
-            get("/albums", AlbumController.GET_ALBUMS);
-            get("/albums/:id", AlbumController.GET_ALBUM);
-            get("/albums/:id/tracks", AlbumController.GET_ALBUM_TRACKS);
-            get("/albums/:id/tracks/:trackId", AlbumController.GET_ALBUM_TRACK);
-        });
+        Runtime.getRuntime().addShutdownHook(new Thread(app::stop));
     }
 
     public static void main(String[] args) throws IOException, InvalidConfigurationException {

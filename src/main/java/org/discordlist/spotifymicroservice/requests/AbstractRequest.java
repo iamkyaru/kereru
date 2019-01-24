@@ -1,7 +1,5 @@
 package org.discordlist.spotifymicroservice.requests;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.apache.http.NameValuePair;
@@ -14,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractRequest {
 
-    protected static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     protected static final String API_BASE = "https://api.spotify.com/v1";
     protected final OkHttpClient httpClient;
 

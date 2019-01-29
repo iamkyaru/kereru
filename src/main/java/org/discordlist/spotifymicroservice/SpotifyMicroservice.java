@@ -1,6 +1,9 @@
 package org.discordlist.spotifymicroservice;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.javalin.Javalin;
+import io.javalin.json.JavalinJson;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.extern.log4j.Log4j2;
@@ -59,6 +62,9 @@ public class SpotifyMicroservice {
                 .defaultContentType("application/json")
                 .enableCaseSensitiveUrls()
                 .start();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JavalinJson.setFromJsonMapper(gson::fromJson);
+        JavalinJson.setToJsonMapper(gson::toJson);
         app.routes(() -> {
             get("/", ctx -> ctx.status(405).result("Not available."));
             path("v1", () -> {

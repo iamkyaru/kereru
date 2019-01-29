@@ -18,18 +18,18 @@ public class PlaylistController {
             -> ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCachedValues())));
 
     public static final Handler GET_PLAYLIST = ctx -> {
-        String playlistId = ctx.queryParam(":playlistId");
+        String playlistId = ctx.pathParam(":playlistId");
         ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCache().get(playlistId))));
     };
 
     public static final Handler GET_PLAYLIST_TRACKS = ctx -> {
-        String playlistId = ctx.queryParam(":playlistId");
+        String playlistId = ctx.pathParam(":playlistId");
         ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCache().get(playlistId).tracks())));
     };
 
     public static final Handler GET_PLAYLIST_TRACK = ctx -> {
-        String playlistId = ctx.queryParam(":playlistId");
-        String trackId = ctx.queryParam(":trackId");
+        String playlistId = ctx.pathParam(":playlistId");
+        String trackId = ctx.pathParam(":trackId");
         Playlist playlist = service.getCache().get(playlistId);
         Track track = playlist.tracks().stream().filter(t -> t.id().equals(trackId)).findFirst().orElse(null);
         if (track == null || playlist.tracks().stream().noneMatch(t -> t.id().equals(trackId)))

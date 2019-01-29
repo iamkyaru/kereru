@@ -18,18 +18,18 @@ public class ArtistController {
             -> ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCachedValues())));
 
     public static final Handler GET_ARTIST = ctx -> {
-        String artistId = ctx.queryParam(":artistId");
+        String artistId = ctx.pathParam(":artistId");
         ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(artistId))));
     };
 
     public static final Handler GET_ARTISTS_TOP_TRACKS = ctx -> {
-        String artistId = ctx.queryParam(":artistId");
+        String artistId = ctx.pathParam(":artistId");
         ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(artistId).topTracks())));
     };
 
     public static final Handler GET_ARTISTS_TOP_TRACK = ctx -> {
-        String artistId = ctx.queryParam(":artistId");
-        String trackId = ctx.queryParam(":trackId");
+        String artistId = ctx.pathParam(":artistId");
+        String trackId = ctx.pathParam(":trackId");
         Artist artist = service.get(artistId);
         Track track = artist.topTracks().stream().filter(t -> t.id().equals(trackId)).findFirst().orElse(null);
         if (track == null || artist.topTracks().stream().noneMatch(t -> t.id().equals(trackId)))

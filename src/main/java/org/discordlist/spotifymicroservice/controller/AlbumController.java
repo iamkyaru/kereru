@@ -20,18 +20,18 @@ public class AlbumController {
             -> GSON.toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCachedValues())));
 
     public static final Handler GET_ALBUM = ctx -> {
-        String albumId = ctx.queryParam(":albumId");
+        String albumId = ctx.pathParam(":albumId");
         ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(albumId))));
     };
 
     public static final Handler GET_ALBUM_TRACKS = ctx -> {
-        String albumId = ctx.queryParam(":albumId");
+        String albumId = ctx.pathParam(":albumId");
         ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.get(albumId).tracks())));
     };
 
     public static final Handler GET_ALBUM_TRACK = ctx -> {
-        String albumId = ctx.queryParam(":albumId");
-        String trackId = ctx.queryParam(":trackId");
+        String albumId = ctx.pathParam(":albumId");
+        String trackId = ctx.pathParam(":trackId");
         Album album = service.get(albumId);
         Track track = album.tracks().stream().filter(t -> t.id().equals(trackId)).findFirst().orElse(null);
         if (track == null || album.tracks().stream().noneMatch(t -> t.id().equals(trackId)))

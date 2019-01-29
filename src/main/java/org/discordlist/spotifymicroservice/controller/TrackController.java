@@ -15,7 +15,7 @@ public class TrackController {
     public static final Handler GET_TRACKS = ctx -> ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCachedValues())));
 
     public static final Handler GET_TRACK = ctx -> {
-        String trackId = ctx.queryParam(":trackId");
+        String trackId = ctx.pathParam(":trackId");
         ctx.json(new StandardResponse(StandardResponse.StatusResponse.SUCCESS, GSON.toJsonTree(service.getCache().get(trackId))));
     };
 }

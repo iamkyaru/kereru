@@ -57,6 +57,7 @@ public class SpotifyMicroservice {
         Javalin app = Javalin.create()
                 .port(config.getInt(Config.SERVICE_PORT))
                 .defaultContentType("application/json")
+                .enableCaseSensitiveUrls()
                 .start();
         app.routes(() -> {
             get("/", ctx -> ctx.status(405).result("Not available."));

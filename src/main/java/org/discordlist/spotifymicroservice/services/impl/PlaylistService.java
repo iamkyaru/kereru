@@ -55,7 +55,9 @@ public class PlaylistService extends AbstractRequest implements IService<Playlis
             try (Response response = httpClient.newCall(request).execute()) {
                 if (response.body() != null) {
                     JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
-                    return makePlaylist(jsonObject);
+                    Playlist playlist = makePlaylist(jsonObject);
+                    playlist.tracks().forEach(SpotifyMicroservice.instance().trackService()::add);
+                    return playlist;
                 }
             } catch (IOException e) {
                 log.error("Could not fetch Playlist", e);

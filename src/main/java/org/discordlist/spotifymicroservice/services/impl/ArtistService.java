@@ -63,7 +63,9 @@ public class ArtistService extends AbstractRequest implements IService<Artist> {
             try (Response response = httpClient.newCall(request).execute()) {
                 if (response.body() != null) {
                     JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
-                    return makeArtist(jsonObject);
+                    Artist artist = makeArtist(jsonObject);
+                    artist.topTracks().forEach(SpotifyMicroservice.instance().trackService()::add);
+                    return artist;
                 }
             } catch (IOException e) {
                 log.error("Could not fetch Artist", e);

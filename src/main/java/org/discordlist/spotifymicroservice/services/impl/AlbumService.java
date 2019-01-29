@@ -57,7 +57,9 @@ public class AlbumService extends AbstractRequest implements IService<Album> {
             try (Response response = httpClient.newCall(request).execute()) {
                 if (response.body() != null) {
                     JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
-                    return makeAlbum(jsonObject);
+                    Album album = makeAlbum(jsonObject);
+                    album.tracks().forEach(SpotifyMicroservice.instance().trackService()::add);
+                    return album;
                 }
             } catch (IOException e) {
                 log.error("Could not fetch Album", e);

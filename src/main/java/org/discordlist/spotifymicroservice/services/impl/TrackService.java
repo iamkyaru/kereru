@@ -73,6 +73,11 @@ public class TrackService extends AbstractRequest implements IService<Track> {
         return null;
     }
 
+    @Override
+    public void add(Track track) {
+        this.cache.update(track);
+    }
+
     /**
      * Returns the {@link Track} Entity which is created by the given {@link JsonObject}
      *

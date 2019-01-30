@@ -24,6 +24,6 @@ public class RedisSession {
             password = null;
         JedisPoolConfig config = new JedisPoolConfig();
         pool = new JedisPool(config, host, port, 0, password);
-        log.info("[Redis] Connected to: {}:{}", host, port);
+        log.info("[Redis] Connecting to: {}:{} [connected={}]", host, port, !pool.isClosed());
     }
 }

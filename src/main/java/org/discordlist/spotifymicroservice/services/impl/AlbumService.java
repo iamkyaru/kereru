@@ -136,7 +136,6 @@ public class AlbumService extends AbstractRequest implements IService<Album> {
                 log.error("Could not request for album tracks", e);
             }
         } while (Objects.requireNonNull(jsonPage).has("next") && jsonPage.get("next") != null);
-        System.out.println(jsonPage.toString());
         JsonArray jsonArray = jsonPage.getAsJsonArray("items");
         jsonArray.forEach(jsonElement -> {
             JsonObject jsonObject = jsonElement.getAsJsonObject();

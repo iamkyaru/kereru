@@ -61,6 +61,7 @@ public class SpotifyMicroservice {
                 .port(config.getInt(Config.SERVICE_PORT))
                 .defaultContentType("application/json")
                 .enableCaseSensitiveUrls()
+                .requestLogger((ctx, executionTimeMs) -> log.info(ctx.method() + " " + ctx.path() + " took " + executionTimeMs + "ms"))
                 .start();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JavalinJson.setFromJsonMapper(gson::fromJson);

@@ -1,0 +1,34 @@
+<Configuration packages="org.discordlist.spotifymicroservice">
+    <Properties>
+        <property name="fileDate">${date:dd-MM-yyyy}</property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <pattern>[%d{HH:mm:ss}] [%-5level] [%t - %tid] %c{36} » %msg%n</pattern>
+            </PatternLayout>
+        </Console>
+        <File name="LatestLog" append="false">
+            <FileName>latest.log</FileName>
+            <PatternLayout>
+                <pattern>[%d{HH:mm:ss}] [%-5level] [%t - %tid] %c{36} - %msg%n</pattern>
+            </PatternLayout>
+        </File>
+        <File name="Log">
+            <FileName>logs/master-${fileDate}.log</FileName>
+            <PatternLayout>
+                <pattern>[%d{HH:mm:ss}] [%-5level] [%t - %tid] %c{36} - %msg%n</pattern>
+            </PatternLayout>
+        </File>
+        <Async name="Async">
+            <AppenderRef ref="Log"/>
+            <AppenderRef ref="LatestLog"/>
+        </Async>
+    </Appenders>
+    <Loggers>
+        <Root>
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Async"/>
+        </Root>
+    </Loggers>
+</Configuration>

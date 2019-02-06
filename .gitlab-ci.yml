@@ -6,14 +6,6 @@ cache:
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2"
-  DOCKER_HOST: "tcp://docker:2375/"
-  DOCKER_DRIVER: "overlay2"
-  
-services:
-  - docker:dind
-
-before_script:
-  - docker info
 
 stages:
   - build
@@ -29,12 +21,3 @@ build:
     paths:
       - target/*.jar
     expire_in: 1 week
-    
-docker:
-  stage: docker
-  image: docker:stable
-  only:
-    - master
-  script:
-    - docker build -t kereru .
-    - docker push discordlist/kereru:latest
